@@ -63,11 +63,10 @@ Oger.extjs.moveToFit = function(obj, viewPort) {
   var objWidth = objWidthOri;
   var objHeight = objHeightOri;
 
-  // now size of window fits, but may be is not shown inside viewport
   // test right
-  objX = Math.min(objX, viewPortX + viewPortWidth- objWidth);
+  objX = Math.min(objX, viewPortX + viewPortWidth - objWidth);
   // test bottom
-  objY = Math.min(objY, viewPortY + viewPortHeight- objHeight);
+  objY = Math.min(objY, viewPortY + viewPortHeight - objHeight);
   // test left
   objX = Math.max(objX, viewPortX);
   // test top
@@ -191,50 +190,8 @@ Oger.extjs.adjustToFit = function(obj, viewPort, autoScroll) {
 
 
 /*
-* Check if a response is present at all and has the 'success' property.
-* In extjs 3.3.1 if an response is empty (0 bytes) this is not handled as failure
-* but the success handler is called. See ux directory.
-*/
-Oger.extjs.actionSuccess = function(action, showSuccessMsg) {
-
-  if (action != undefined && action.result != undefined &&
-      action.result.success != undefined && action.result.success == true) {
-    if (showSuccessMsg) {
-      Oger.extjs.submitMsg();
-    }
-    return true;
-  }
-
-  // SOME MESSAGES ONLY FOR COLLECTING FOR BUGREPORT (begin) -------------------------
-  if (action == undefined) {
-    Ext.Msg.alert(Oger._('Fehler (Server+)'), Oger._('Antwort des Servers fehlerhaft oder leer. (action == undefinded)'));
-    return false;
-  }
-  if (action.result == undefined) {
-    Ext.Msg.alert(Oger._('Fehler (Server+)'), Oger._('Antwort des Servers fehlerhaft oder leer. (action.result == undefinded)'));
-    return false;
-  }
-  if (action.result.success == undefined) {
-    Ext.Msg.alert(Oger._('Fehler (Server+)'), Oger._('Antwort des Servers fehlerhaft oder leer. (action.result.success == undefinded)'));
-    return false;
-  }
-  if (action.result.success == false) {
-    Ext.Msg.alert(Oger._('Fehler (Server+)'), Oger._('Antwort des Servers fehlerhaft oder leer. (action.result.success == false)'));
-    return false;
-  }
-  // SOME MESSAGES ONLY FOR COLLECTING FOR BUGREPORT (end) -------------------------
-
-  // otherwise notify an error
-  Ext.Msg.alert(Oger._('Fehler (Server+)'), Oger._('Antwort des Servers fehlerhaft oder leer.'));
-  return false;
-
-}  // eo check for successful response
-
-
-
-/*
 * General handler for form submission errors.
-* On not "sufficient" handled failures do not return true to notify
+* On "insufficient" handled failures return false to notify
 * that subsequent handling is expected.
 */
 Oger.extjs.handleFormSubmitFailure = function(form, action) {
@@ -281,6 +238,7 @@ Oger.extjs.handleFormSubmitFailure = function(form, action) {
       // this can not be (or should not be) handled generaly, so do not return with true
   }  // eo switch
 
+  return false;
 }; // eo form submission error handler
 
 
@@ -298,44 +256,9 @@ Oger.extjs.handleAjaxFailure = function(response, opts) {
 
 
 /**
-* check if form is dirty and do nothing else
-* OBSOLETED by ext-4.1
-*/
-Oger.extjs.formIsDirty = function(form) {
-
-  // if no form given it cannot be dirty?
-  if (!form) {
-    return false;
-  }
-
-  // if a form panel is given than get the underlaying basic form
-  if (typeof form.getForm == 'function') {
-    form = form.getForm();
-  }
-
-
-  // own processing to exclude fileField (which cannot be reseted!)
-  var dirtyFlag = false;
-
-  var processField = function(field) {
-    if (field.isXType('filefield')) {
-      // do nothing
-    }
-    else if (field.isDirty()) {
-      dirtyFlag = true;
-    };
-  };
-  form.getFields().each(processField);
-
-  return dirtyFlag;
-}  // eo form is dirty flag
-
-
-
-/**
  * Create info about dirty fields
  */
-Oger.extjs.dirtyFieldsInfo = function(form) {
+Oger.extjs.getDirtyFieldsInfo = function(form) {
 
   // if no form given it cannot be dirty?
   if (!form) {
@@ -432,7 +355,7 @@ Oger.extjs.confirmDirtyClose = function(win, form) {
         },
         { text: Oger._('Details'),
           handler: function(button, event) {
-            Ext.Msg.alert(Oger._('Ungespeicherte Änderungen - Details'), Oger.extjs.dirtyFieldsInfo(form));
+            Ext.Msg.alert(Oger._('Ungespeicherte Änderungen - Details'), Oger.extjs.getDirtyFieldsInfo(form));
           },
         },
       ],
@@ -462,14 +385,6 @@ Oger.extjs.confirmDirtyReset = function(form, showDirtyInfo) {
 
   // only ask if dirty
   if (Oger.extjs.formIsDirty(form)) {
-
-    /*
-    var dirtyFieldsInfo = '';
-    if (showDirtyInfo) {
-      dirtyFieldsInfo = Oger.extjs.dirtyFieldsInfo(form);
-      dirtyFieldsInfo = '\n' + dirtyFieldsInfo;
-    }
-    */
 
     var confirmWin = Ext.create('Ext.window.Window', {
       title: Oger._('Ungespeicherte Änderungen'),
@@ -510,7 +425,7 @@ Oger.extjs.confirmDirtyReset = function(form, showDirtyInfo) {
         },
         { text: Oger._('Details'),
           handler: function(button, event) {
-            Ext.Msg.alert(Oger._('Ungespeicherte Änderungen - Details'), Oger.extjs.dirtyFieldsInfo(form));
+            Ext.Msg.alert(Oger._('Ungespeicherte Änderungen - Details'), Oger.extjs.getDirtyFieldsInfo(form));
           },
         },
       ],
@@ -559,10 +474,10 @@ dialog.show();
 *        - form: (mandatory) FormPanel or BasicForm
 *        - title: (optional) title for the confirmation window
 *        - msg: (optional) message for the confirmation window
-*        - saveFn: (mandatory) action for yes button
-*        - saveText: (optional) alternate text for save button
-*        - resetFn: (optional) action for no button
-*        - resetText: (optional) alternate text for reset button
+*        - yesFn: (mandatory) action for yes button
+*        - yesText: (optional) alternate text for save button
+*        - noFn: (optional) action for no button
+*        - noText: (optional) alternate text for reset button
 *        - cancelText: (optional) alternate text for cancel button
 *        (and may be later TODO parameters for the called functions)
 */
@@ -580,8 +495,8 @@ Oger.extjs.confirmDirtyAction = function(args) {
     var title = (args.title ? args.title : Oger._('Bestätigung erforderlich'));
     var msg = (args.msg ? args.msg : Oger._('Ungespeicherte Änderungen vorhanden.\n\nJetzt Speichern?'));
 
-    var saveText = (args.saveText ? args.saveText : Oger._('Speichern'));
-    var resetText = (args.resetText ? args.resetText : Oger._('Zurücksetzen'));
+    var yesText = (args.saveText ? args.yesText : Oger._('Speichern'));
+    var noText = (args.resetText ? args.noText : Oger._('Zurücksetzen'));
     var cancelText = (args.cancelText ? args.cancelText : Oger._('Abbrechen'));
 
     var confirmWin = Ext.create('Ext.window.Window', {
@@ -608,14 +523,14 @@ Oger.extjs.confirmDirtyAction = function(args) {
       buttons: [
         { text: saveText,
           handler: function(button, event) {
-            args.saveFn();
+            args.yesFn();
             this.up('window').close();
           },
         },
         { text: resetText,
           handler: function(button, event) {
-            if (args.resetFn) {
-              args.resetFn();
+            if (args.noFn) {
+              args.noFn();
             }
             else {
               Oger.extjs.resetForm(form);
@@ -631,7 +546,7 @@ Oger.extjs.confirmDirtyAction = function(args) {
         },
         { text: Oger._('Details'),
           handler: function(button, event) {
-            Ext.Msg.alert(Oger._('Ungespeicherte Änderungen - Details'), Oger.extjs.dirtyFieldsInfo(form));
+            Ext.Msg.alert(Oger._('Ungespeicherte Änderungen - Details'), Oger.extjs.getDirtyFieldsInfo(form));
           },
         },
       ],
@@ -715,7 +630,7 @@ Oger.extjs.emptyForm = function(form, resetDirty) {
 * Get invalid fields
 * @form: Form to test the fields
 */
-Oger.extjs.getInvalidFieldNames = function(form) {
+Oger.extjs.getInvalidFieldsInfo = function(form) {
 
   // if a form panel is given than get the underlaying basic form
   if (typeof form.getForm == 'function') {
@@ -795,31 +710,6 @@ Oger.extjs.resetForm = function(form) {
 
   form.getFields().each(processField);
 };  // eo reset form
-
-
-
-/*
-* Workaround for bug in firefox.
-* Messageboxes (confirm, alert, ...) are shown behind other windows
-* in paticular behind tabpanels.
-* Default zseed for window managers is 9000.
-* Copied from: http://nicolaematei.wordpress.com/2008/07/02/ext-js-firefox3-z-index-bug/
-* DOES NOT WORK AS EXPECTED (02/2011)
-*/
-this.fireFoxTempZSeed = 9000;
-Oger.extjs.fireFoxHighZSeed = function(setHigh){
-  if(Ext.isGecko3){ // TODO Temp Fix: FF3
-    if(setHigh){
-      this.fireFoxTempZSeed = Ext.WindowMgr.zseed;
-      alert(Ext.WindowMgr.zseed);
-      Ext.WindowMgr.zseed = 10000;
-    }
-    else {  // reset to old seed
-      Ext.WindowMgr.zseed = this.fireFoxTempZSeed;
-    }
-  }
-};  // eo firefox work around
-
 
 
 /*
@@ -921,7 +811,7 @@ Oger.extjs.showInvalidFields = function(form) {
       },
       { text: Oger._('Details'),
         handler: function(button, event) {
-          Ext.Msg.alert(Oger._('Formularfehler - Details'), Oger._('Feldnamen: ') + Oger.extjs.getInvalidFieldNames(form));
+          Ext.Msg.alert(Oger._('Formularfehler - Details'), Oger._('Feldnamen: ') + Oger.extjs.getInvalidFieldsInfo(form));
         },
       },
     ],
