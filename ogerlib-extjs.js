@@ -17,78 +17,64 @@ if (typeof Oger.extjs == 'undefined') {
 
 
 /*
-* DEPRECATED: Use Ext.Component.alignTo(otherComponent, 'c-c?') instead.
-*
 * Force that the upper left corner of an Extjs object to be displayed inside the
 * boundery of another Extjs object. The moved object is not resized.
 * If you also want the object also to be resized to fit into the outer objet,
 * than use Oger.extjs.adjustToFit().
-* Obj and viewPort must be visible to work.
-* @obj: Any visible Extjs object that is resized and positioned if not fit.
+* Compnonent and viewPort must be visible to work.
+* @cmp: Any visible Extjs component that is resized and positioned if not fit.
 * @viewpoint: Any visible Extjs object that defines the boundery.
 *             If not provided the browser windows is taken.
 */
-Oger.extjs.moveToFit = function(obj, viewPort) {
+Oger.extjs.moveToFit = function(cmp, viewPort) {
 
   // see comment block in Oger.extjs.adjustToFit
   // for more posibilities to detect browser size
 
-  var viewPortX;
-  var viewPortY;
-  var viewPortWidth;
-  var viewPortHeight;
-
-  // get position and size of viewport
-  if (viewPort == undefined) {
-    viewPortX = 0;
-    viewPortY = 0;
-    viewPortWidth = window.innerWidth;
-    viewPortHeight = window.innerHeight;
+  var vp = {
+    x: 0,
+    y: 0,
+    width: window.innerWidth,
+    height: window.innerHeight,
   }
-  else {
-    viewPortX = viewPort.getPosition()[0];
-    viewPortY = viewPort.getPosition()[1];
-    viewPortWidth = viewPort.getWidth();
-    viewPortHeight = viewPort.getHeight();
-  }  // eo viewport position and size
-
-
-  var objXOri = obj.getPosition()[0];
-  var objYOri = obj.getPosition()[1];
-  var objWidthOri = obj.getWidth();
-  var objHeightOri = obj.getHeight();
-
-  var objX = objXOri;
-  var objY = objYOri;
-  var objWidth = objWidthOri;
-  var objHeight = objHeightOri;
-
-  // test right
-  objX = Math.min(objX, viewPortX + viewPortWidth - objWidth);
-  // test bottom
-  objY = Math.min(objY, viewPortY + viewPortHeight - objHeight);
-  // test left
-  objX = Math.max(objX, viewPortX);
-  // test top
-  objY = Math.max(objY, viewPortY);
-
-  if (objX != objXOri || objY != objYOri) {
-    obj.setPosition(objX, objY);
+  if (viewPort) {
+    vp.x = viewPort.getPosition()[0];
+    vp.y = viewPort.getPosition()[1];
+    vp.width = viewPort.getWidth();
+    vp.height = viewPort.getHeight();
   }
 
+  var c = {}
+  c.x = c.oriX = cmp.getPosition()[0];
+  c.y = c.oriY = cmp.getPosition()[1];
+  c.width = c.oriWidth = cmp.getWidth();
+  c.height = c.oriHeight = cmp.getHeight();
+
+
+  // test right, bottom, left, top
+  // this order forces the left upper corner into the
+  // most upper left position inside the viewport
+  c.x = Math.min(c.x, vp.x + vp.width - c.width);
+  c.y = Math.min(c.y, vp.y + vp.height - c.height);
+  c.x = Math.max(c.x, vp.x);
+  c.y = Math.max(c.y, vp.y);
+
+  if (c.x != c.oriX || c.y != c.oriY) {
+    cmp.setPosition(c.x, c.y);
+  }
 }  // eo move
 
 
 
 /*
 * Force an Extjs object to be displayed inside the boundery of another Extjs object.
-* Obj and viewPort must be visible to work.
-* @obj: Any visible Extjs object that is resized and positioned if not fit.
+* Component and viewPort must be visible to work.
+* @cmp: Any visible Extjs component that is resized and positioned if not fit.
 * @viewpoint: Any visible Extjs object that defines the boundery.
 *             If not provided the browser windows is taken.
 * @autoScroll: Defines if autoScroll should be set, if the window size is altered (shrinked).
 */
-Oger.extjs.adjustToFit = function(obj, viewPort, autoScroll) {
+Oger.extjs.adjustToFit = function(cmp, viewPort) {
 
 /*
   // ONLY FOR DOCUMENTATION
@@ -122,69 +108,36 @@ Oger.extjs.adjustToFit = function(obj, viewPort, autoScroll) {
   // maybe try: document.body.clientHeight
 */
 
-  var viewPortX;
-  var viewPortY;
-  var viewPortWidth;
-  var viewPortHeight;
-
-  // get position and size of viewport
-  if (viewPort == undefined) {
-    viewPortX = 0;
-    viewPortY = 0;
-    viewPortWidth = window.innerWidth;
-    viewPortHeight = window.innerHeight;
+  var vp = {
+    x: 0,
+    y: 0,
+    width: window.innerWidth,
+    height: window.innerHeight,
   }
-  else {
-    viewPortX = viewPort.getPosition()[0];
-    viewPortY = viewPort.getPosition()[1];
-    viewPortWidth = viewPort.getWidth();
-    viewPortHeight = viewPort.getHeight();
-  }  // eo viewport position and size
+  if (viewPort) {
+    vp.x = viewPort.getPosition()[0];
+    vp.y = viewPort.getPosition()[1];
+    vp.width = viewPort.getWidth();
+    vp.height = viewPort.getHeight();
+  }
 
-
-  var objXOri = obj.getPosition()[0];
-  var objYOri = obj.getPosition()[1];
-  var objWidthOri = obj.getWidth();
-  var objHeightOri = obj.getHeight();
-
-  var objX = objXOri;
-  var objY = objYOri;
-  var objWidth = objWidthOri;
-  var objHeight = objHeightOri;
+  var c = {}
+  c.x = c.oriX = cmp.getPosition()[0];
+  c.y = c.oriY = cmp.getPosition()[1];
+  c.width = c.oriWidth = cmp.getWidth();
+  c.height = c.oriHeight = cmp.getHeight();
 
   // if size does not fit at all, than resize first.
   // to minimize resize events apply at once
-  if (objWidth > viewPortWidth) {
-    objWidth = viewPortWidth;
-  }
-  if (objHeight > viewPortHeight) {
-    objHeight = viewPortHeight;
-  }
+  c.width = Math.min(c.width, vp.width);
+  c.height = Math.min(c.height, vp.height);
 
-  if (objWidth != objWidthOri || objHeight != objHeightOri) {
-    obj.setSize(objWidth, objHeight);
-    if (autoScroll) {
-      obj.setAutoScroll(true);
-    }
+  if (c.width != c.oriWidth || c.height != c.oriHeight) {
+    cmp.setSize(c.width, c.height);
   }
 
-  // now size of window fits, but may be is not shown inside viewport
-  // Oger.extjs.moveToFit() could be used, but all values are already present,
-  // so do it here.
-
-  // test right
-  objX = Math.min(objX, viewPortX + viewPortWidth- objWidth);
-  // test bottom
-  objY = Math.min(objY, viewPortY + viewPortHeight- objHeight);
-  // test left
-  objX = Math.max(objX, viewPortX);
-  // test top
-  objY = Math.max(objY, viewPortY);
-
-  if (objX != objXOri || objY != objYOri) {
-    obj.setPosition(objX, objY);
-  }
-
+  // now size of window fits, so we can move to final location
+  Oger.extjs.moveToFit(cmp, viewPoint);
 }  // eo adjust
 
 
@@ -272,7 +225,7 @@ Oger.extjs.getDirtyFieldsInfo = function(form) {
 
   var dirtyMsg = '';
 
-  var dirtyFlag = Oger.extjs.formIsDirty(form);
+  var dirtyFlag = form.isDirty();
   if (dirtyFlag) {   // use own dirty flag instead of form.isDirty()
 
     dirtyMsg = Oger._('Geändert:');
@@ -300,142 +253,6 @@ Oger.extjs.getDirtyFieldsInfo = function(form) {
 }  // eo dirty fields message
 
 
-
-/*
-* Ask to force window close
-* @panel: Panel (or window) that should be closed
-* @form: FormPanel or BasicForm to test for dirty state
-*/
-Oger.extjs.confirmDirtyClose = function(win, form) {
-
-  if (!form) {
-    form = win.down('form');
-  }
-  if (typeof form.getForm == 'function') {
-    form = form.getForm();
-  }
-
-  // only ask if dirty
-  if (Oger.extjs.formIsDirty(form)) {
-
-    var confirmWin = Ext.create('Ext.window.Window', {
-      title: Oger._('Bestätigung erforderlich - ') + win.title,
-      width: 300,
-      height: 150,
-      modal: true,
-      autoScroll: true,
-      layout: 'fit',
-      border: false,
-
-      items: [
-        { xtype: 'form',
-          layout: 'fit',
-          bodyPadding: 15,
-          items: [
-            { xtype: 'textarea', value: Oger._('Ungespeicherte Änderungen vorhanden.\n\nZurück zur Eingabe?'),
-              fieldStyle: 'text-align:center;border:none;',
-            },
-          ]
-        }
-      ],
-
-      buttonAlign: 'center',
-      buttons: [
-        { text: Oger._('Ja'),
-          handler: function(button, event) {
-            this.up('window').close();
-          },
-        },
-        { text: Oger._('Verwerfen'),
-          handler: function(button, event) {
-            Oger.extjs.resetDirty(form);
-            win.close();
-            this.up('window').close();
-          },
-        },
-        { text: Oger._('Details'),
-          handler: function(button, event) {
-            Ext.Msg.alert(Oger._('Ungespeicherte Änderungen - Details'), Oger.extjs.getDirtyFieldsInfo(form));
-          },
-        },
-      ],
-    });
-    confirmWin.show();
-
-    return false;
-  }
-
-}  // eo confirm force close
-
-
-
-/*
-* Ask to reset dirty form
-* @form: FormPanel or BasicForm to test for dirty state
-* @showDirtyInfo: Show info about dirty fields
-*/
-Oger.extjs.confirmDirtyReset = function(form, showDirtyInfo) {
-
-  if (!form) {
-    return;
-  }
-  if (typeof form.getForm == 'function') {
-    form = form.getForm();
-  }
-
-  // only ask if dirty
-  if (Oger.extjs.formIsDirty(form)) {
-
-    var confirmWin = Ext.create('Ext.window.Window', {
-      title: Oger._('Ungespeicherte Änderungen'),
-      width: 400,
-      height: 200,
-      modal: true,
-      autoScroll: true,
-      layout: 'fit',
-      border: false,
-
-      items: [
-        { xtype: 'form',
-          layout: 'fit',
-          bodyPadding: 15,
-          items: [
-            { xtype: 'textarea',
-              fieldStyle: 'text-align:center;border:none;',
-              value: Oger._('Ungespeicherte Änderungen vorhanden. Änderungen rückgängig machen?'),
-            },
-          ]
-
-        }
-      ],
-
-      buttonAlign: 'center',
-      buttons: [
-        { text: 'Ja',
-          handler: function(button, event) {
-            form.reset();
-            this.up('window').close();
-          },
-        },
-        { text: 'Nein',
-          handler: function(button, event) {
-            // do nothing
-            this.up('window').close();
-          },
-        },
-        { text: Oger._('Details'),
-          handler: function(button, event) {
-            Ext.Msg.alert(Oger._('Ungespeicherte Änderungen - Details'), Oger.extjs.getDirtyFieldsInfo(form));
-          },
-        },
-      ],
-    });
-    confirmWin.show();
-
-    return false;
-  }
-
-}  // eo confirm reset form
 
 /*
  * Memo from: http://stackoverflow.com/questions/6261013/extjs-message-box-with-custom-buttons
@@ -473,11 +290,11 @@ dialog.show();
 *        Members are:
 *        - form: (mandatory) FormPanel or BasicForm
 *        - title: (optional) title for the confirmation window
-*        - msg: (optional) message for the confirmation window
+*        - msg: (mandatory) message for the confirmation window
 *        - yesFn: (mandatory) action for yes button
-*        - yesText: (optional) alternate text for save button
+*        - yesText: (optional) alternate text for yes button
 *        - noFn: (optional) action for no button
-*        - noText: (optional) alternate text for reset button
+*        - noText: (optional) alternate text for no button
 *        - cancelText: (optional) alternate text for cancel button
 *        (and may be later TODO parameters for the called functions)
 */
@@ -490,13 +307,13 @@ Oger.extjs.confirmDirtyAction = function(args) {
 
   // only ask if form is dirty
   // (normaly this method should only be called if the form is dirty !!!)
-  if (Oger.extjs.formIsDirty(form)) {
+  if (form.isDirty()) {
 
     var title = (args.title ? args.title : Oger._('Bestätigung erforderlich'));
-    var msg = (args.msg ? args.msg : Oger._('Ungespeicherte Änderungen vorhanden.\n\nJetzt Speichern?'));
+    var msg = args.msg ? args.msg : Oger._('Message fehlt!'));
 
-    var yesText = (args.saveText ? args.yesText : Oger._('Speichern'));
-    var noText = (args.resetText ? args.noText : Oger._('Zurücksetzen'));
+    var yesText = (args.yesText ? args.yesText : Oger._('Ja'));
+    var noText = (args.noText ? args.noText : Oger._('Nein'));
     var cancelText = (args.cancelText ? args.cancelText : Oger._('Abbrechen'));
 
     var confirmWin = Ext.create('Ext.window.Window', {
@@ -513,7 +330,9 @@ Oger.extjs.confirmDirtyAction = function(args) {
           layout: 'fit',
           bodyPadding: 15,
           items: [
-            { xtype: 'textarea', value: msg, fieldStyle: 'text-align:center;border:none;' },
+            { xtype: 'textarea', value: msg, fieldStyle: 'text-align:center;border:none;',
+              fieldStyle: 'text-align:center;border:none;',
+            },
           ]
 
         }
@@ -521,20 +340,9 @@ Oger.extjs.confirmDirtyAction = function(args) {
 
       buttonAlign: 'center',
       buttons: [
-        { text: saveText,
+        { text: yesText,
           handler: function(button, event) {
             args.yesFn();
-            this.up('window').close();
-          },
-        },
-        { text: resetText,
-          handler: function(button, event) {
-            if (args.noFn) {
-              args.noFn();
-            }
-            else {
-              Oger.extjs.resetForm(form);
-            }
             this.up('window').close();
           },
         },
@@ -551,8 +359,20 @@ Oger.extjs.confirmDirtyAction = function(args) {
         },
       ],
     });
-    confirmWin.show();
 
+    if (noText) {
+      confirmWin.add(Ext.create('Ext.Button', {
+        text: noText,
+        handler: function(button, event) {
+          if (args.noFn) {
+            args.noFn();
+          }
+          this.up('window').close();
+        },
+      },
+    }
+
+    confirmWin.show();
     return false;
   }
 
@@ -560,11 +380,57 @@ Oger.extjs.confirmDirtyAction = function(args) {
 
 
 
+/*
+* Ask to force window close
+* @panel: Panel (or window) that should be closed
+* @form: FormPanel or BasicForm to test for dirty state
+*/
+Oger.extjs.confirmDirtyClose = function(win, form) {
 
+  if (!form) {
+    form = win.down('form');
+  }
+  if (typeof form.getForm == 'function') {
+    form = form.getForm();
+  }
+
+  if (form.isDirty()) {
+    Oger.extjs.confirmDirtyAction({
+      form: form,
+      msg: Oger._('Ungespeicherte Änderungen vorhanden. Fenster trotzdem schliessen?'),
+      yesFn: function(form) { Oger.extjs.resetDirty(form); win.close },
+    });
+
+    return false;
+  }
+}  // eo confirm force close
 
 
 
 /*
+* Ask to reset dirty form
+* @form: FormPanel or BasicForm to test for dirty state
+*/
+Oger.extjs.confirmDirtyReset = function(form) {
+
+  if (typeof form.getForm == 'function') {
+    form = form.getForm();
+  }
+
+  if (form.isDirty()) {
+    Oger.extjs.confirmDirtyAction({
+      form: form,
+      msg: Oger._('Ungespeicherte Änderungen vorhanden. Änderungen zurücksetzen?'),
+      yesFn: function(form) { form.reset() },
+    });
+
+    return false;
+  }
+}  // eo confirm reset form
+
+
+
+/**
 * Unset the dirty state of a form
 * @form: Form which dirty state should be removed
 */
@@ -626,7 +492,7 @@ Oger.extjs.emptyForm = function(form, resetDirty) {
 
 
 
-/*
+/**
 * Get invalid fields
 * @form: Form to test the fields
 */
@@ -653,127 +519,7 @@ Oger.extjs.getInvalidFieldsInfo = function(form) {
 
 
 
-/*
-* Repair invalid combo values. (set to null by error)
-* @form: Form to test the fields
-*/
-Oger.extjs.repairComboValues = function(form) {
-
-  // if a form panel is given than get the underlaying basic form
-  if (typeof form.getForm == 'function') {
-    form = form.getForm();
-  }
-
-  var processField = function(field) {
-    if (field.isXType('combo')) {
-      if (field.getSubmitValue() === null && field.originalValue != null) {
-        field.setValue('');
-      }
-    }
-  };
-
-  form.getFields().each(processField);
-
-  return true;
-};  // eo repair combo values
-
-
 /**
- * Reset form
- * form.reset() does not reset null values in hidden fields and
- *              does not reset values of FileField
- * @form: Form which dirty state should be removed
- */
-Oger.extjs.resetForm = function(form) {
-
-  // if a form panel is given than get the underlaying basic form
-  if (typeof form.getForm == 'function') {
-    form = form.getForm();
-  }
-
-  // I am unable to reset FileField too, so use reset of ext
-  form.reset();
-  return;
-
-  // OBSOLETE for now
-  var processField = function(field) {
-    if (field.isXType('radiogroup') || field.isXType('checkboxgroup')) {
-      // group items are separate fields so handling of group is not necessary
-    }
-    else {
-      // field.setValue(field.originalValue);
-      // fileField has no setValue nor does "field.value = field.originalValue" work
-      // nor works field.reset() but something we must use
-      field.reset();
-    }
-  };
-
-  form.getFields().each(processField);
-};  // eo reset form
-
-
-/*
-* Form saved message
-*/
-Oger.extjs.submitMsg = function(success, addMsg) {
-  if (typeof success == 'undefined' || success === null) {
-    success = true;
-  }
-  if (typeof addMsg == 'undefined' || addMsg === null) {
-    addMsg = '';
-  }
-  if (success) {
-    Ext.Msg.alert(Oger._('Ergebnis'), Oger._('Datensatz wurde erfolgreich gespeichert.' + addMsg));
-  }
-  else {
-    Ext.Msg.alert(Oger._('Fehler'), Oger._('Datensatz konnte nicht gespeichert werden.'));
-  }
-
-};  // eo saved ok message
-
-
-
-/*
-* Show a generic wait window for given millis
-*/
-Oger.showWaitWin = function(milli, modal) {
-
-  //Ext.Msg.wait(Oger._('Das dauert leider etwas ...'), Oger._('Bitte warten'));
-  //Ext.Function.defer(function() { Ext.Msg.hide; }, milli);
-
-  // Ext.Message is overwritten by any other error message and overwrites other messages too
-  // so use a self designed wait window
-
-  // modal defaults to true
-  if (modal == undefined || modal == null) {
-    modal = true;
-  }
-
-  var waitWin = Ext.create('Ext.window.Window', {
-    title: Oger._('Bitte Warten'),
-    width: 300,
-    height: 250,
-    modal: modal,
-    autoScroll: true,
-    layout: 'fit',
-    items: [
-      { xtype: 'form',
-        layout: 'fit',
-        items: [
-          { xtype: 'textarea', value: Oger._('Das dauert leider etwas länger ...'), disabled: true },
-        ]
-      },
-    ],
-  });
-  waitWin.show();
-  //waitWin.toFront();
-  Ext.Function.defer(function() { waitWin.close(); }, milli);
-
-}  // eo show wait window
-
-
-
-/*
  * Show windows with invalid field names
 */
 Oger.extjs.showInvalidFields = function(form) {
@@ -819,3 +565,127 @@ Oger.extjs.showInvalidFields = function(form) {
   win.show();
 
 }  // eo invalid fields window
+
+
+/**
+* Repair invalid combo values. (set to null by error)
+* @form: Form to test the fields
+*/
+Oger.extjs.repairComboValues = function(form) {
+
+  // if a form panel is given than get the underlaying basic form
+  if (typeof form.getForm == 'function') {
+    form = form.getForm();
+  }
+
+  var processField = function(field) {
+    if (field.isXType('combo')) {
+      if (field.getSubmitValue() === null && field.originalValue != null) {
+        field.setValue('');
+      }
+    }
+  };
+
+  form.getFields().each(processField);
+
+  return true;
+};  // eo repair combo values
+
+
+/**
+* Show a generic form saved message
+*/
+Oger.extjs.submitMsg = function(success, addMsg) {
+  if (typeof success == 'undefined' || success === null) {
+    success = true;
+  }
+  if (typeof addMsg == 'undefined' || addMsg === null) {
+    addMsg = '';
+  }
+  if (success) {
+    Ext.Msg.alert(Oger._('Ergebnis'), Oger._('Datensatz wurde erfolgreich gespeichert.' + addMsg));
+  }
+  else {
+    Ext.Msg.alert(Oger._('Fehler'), Oger._('Datensatz konnte nicht gespeichert werden.'));
+  }
+
+};  // eo saved ok message
+
+
+
+/**
+* Show a generic wait window for given millis
+*/
+Oger.showWaitWin = function(milli, modal) {
+
+  //Ext.Msg.wait(Oger._('Das dauert leider etwas ...'), Oger._('Bitte warten'));
+  //Ext.Function.defer(function() { Ext.Msg.hide; }, milli);
+
+  // Ext.Message is overwritten by any other error message and overwrites other messages too
+  // so use a self designed wait window
+
+  // modal defaults to true
+  if (modal == undefined || modal == null) {
+    modal = true;
+  }
+
+  var waitWin = Ext.create('Ext.window.Window', {
+    title: Oger._('Bitte Warten'),
+    width: 300,
+    height: 250,
+    modal: modal,
+    autoScroll: true,
+    layout: 'fit',
+    items: [
+      { xtype: 'form',
+        layout: 'fit',
+        items: [
+          { xtype: 'textarea', value: Oger._('Das dauert leider etwas länger ...'), disabled: true },
+        ]
+      },
+    ],
+  });
+  waitWin.show();
+  //waitWin.toFront();
+  Ext.Function.defer(function() { waitWin.close(); }, milli);
+
+}  // eo show wait window
+
+
+
+/**
+ * Reset form
+ * form.reset() does not reset null values in hidden fields and
+ *              does not reset values of FileField
+ * @form: Form which dirty state should be removed
+ */
+ /* OBSOLETED because not better than original extjs form.reset()
+Oger.extjs.resetForm = function(form) {
+
+  // if a form panel is given than get the underlaying basic form
+  if (typeof form.getForm == 'function') {
+    form = form.getForm();
+  }
+
+  // I am unable to reset FileField too, so use reset of ext
+  form.reset();
+  return;
+
+  // OBSOLETE for now
+  var processField = function(field) {
+    if (field.isXType('radiogroup') || field.isXType('checkboxgroup')) {
+      // group items are separate fields so handling of group is not necessary
+    }
+    else {
+      // field.setValue(field.originalValue);
+      // fileField has no setValue nor does "field.value = field.originalValue" work
+      // nor works field.reset() but something we must use
+      field.reset();
+    }
+  };
+
+  form.getFields().each(processField);
+};  // eo reset form
+*/
+
+
