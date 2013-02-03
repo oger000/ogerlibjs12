@@ -1,12 +1,12 @@
-/*
+/**
 #LICENSE BEGIN
 #LICENSE END
 */
 
 
 
-/*
-* Define namespace.
+/**
+* Fake Oger namespace. (maybe better use constructor function?)
 */
 if (typeof Oger == 'undefined') {
   Oger = {};
@@ -14,6 +14,8 @@ if (typeof Oger == 'undefined') {
 if (typeof Oger.extjs == 'undefined') {
   Oger.extjs = {};
 }
+
+
 
 
 /*
@@ -310,7 +312,7 @@ Oger.extjs.confirmDirtyAction = function(args) {
   if (form.isDirty()) {
 
     var title = (args.title ? args.title : Oger._('Bestätigung erforderlich'));
-    var msg = args.msg ? args.msg : Oger._('Message fehlt!'));
+    var msg = (args.msg ? args.msg : Oger._('Message fehlt!'));
 
     var yesText = (args.yesText ? args.yesText : Oger._('Ja'));
     var noText = (args.noText ? args.noText : Oger._('Nein'));
@@ -369,7 +371,7 @@ Oger.extjs.confirmDirtyAction = function(args) {
           }
           this.up('window').close();
         },
-      },
+      }));
     }
 
     confirmWin.show();
