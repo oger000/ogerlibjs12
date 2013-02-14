@@ -145,20 +145,23 @@ Oger.extjs.adjustToFit = function(cmp, viewPort) {
 
 
 /*
-* General handler for form submission errors.
+* General handler for form action errors.
 * On "insufficient" handled failures return false to notify
 * that subsequent handling is expected.
 */
-Oger.extjs.handleFormSubmitFailure = function(form, action) {
+Oger.extjs.handleFormActionFailure = function(form, action) {
 
   switch (action.failureType) {
+
     case Ext.form.Action.CLIENT_INVALID:
       Oger.extjs.showInvalidFields(form);
       //Ext.Msg.alert(Oger._('Fehler'), Oger._('Fehler im Formular. Bitte korrekt ausfüllen.'));
       return true;
+
     case Ext.form.Action.CONNECT_FAILURE:
       Ext.Msg.alert(Oger._('Fehler'), Oger._('Fehler bei der Datenübertragung. Eventuell nochmal versuchen.'));
       return true;
+
     case Ext.form.Action.SERVER_INVALID:
       //Ext.Msg.alert(Oger._('Fehler'), Oger._('Serverapplikation meldet successfull=false.'));
       // handle only some situations
@@ -184,17 +187,21 @@ Oger.extjs.handleFormSubmitFailure = function(form, action) {
         Ext.Msg.alert(Oger._('Fehler (Server)'), Oger._('Antwort des Servers fehlerhaft.'));
       }
       break;
+
     case Ext.form.Action.LOAD_FAILURE:
       Ext.Msg.alert(Oger._('Fehler'), Oger._('Fehler beim Laden von Daten oder keine Daten bereitgestellt.'));
       // this can not be (or should not be) handled generaly, so do not return with true
       break;
+
     default:
       Ext.Msg.alert(Oger._('Fehler'), Oger._('Unbekannter Submit/Action-Fehlertyp:' + action.failureType + '.'));
       // this can not be (or should not be) handled generaly, so do not return with true
+      break;
+
   }  // eo switch
 
   return false;
-}; // eo form submission error handler
+}; // eo form action error handler
 
 
 
