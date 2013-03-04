@@ -302,10 +302,13 @@ dialog.show();
 *        - msg: (mandatory) message for the confirmation window
 *        - yesFn: (mandatory) action for yes button
 *        - yesText: (optional) alternate text for yes button
+*        - yesFnArgs: (optional) arguments for yes function NOT IMPLEMENTED
 *        - noFn: (optional) action for no button
 *        - noText: (optional) alternate text for no button
+*        - noFnArgs: (optional) arguments for no function NOT IMPLEMENTED
 *        - cancelText: (optional) alternate text for cancel button
 *        (and may be later TODO parameters for the called functions)
+* For now no args are passed to yes and no functions. Must be implemented if needed.
 */
 Oger.extjs.confirmDirtyAction = function(args) {
 
@@ -407,7 +410,7 @@ Oger.extjs.confirmDirtyClose = function(win, form) {
     Oger.extjs.confirmDirtyAction({
       form: form,
       msg: Oger._('Ungespeicherte Änderungen vorhanden. Fenster trotzdem schliessen?'),
-      yesFn: function(form) { Oger.extjs.resetDirty(form); win.close },
+      yesFn: function() { Oger.extjs.resetDirty(form); win.close() },
     });
 
     return false;
@@ -430,7 +433,7 @@ Oger.extjs.confirmDirtyReset = function(form) {
     Oger.extjs.confirmDirtyAction({
       form: form,
       msg: Oger._('Ungespeicherte Änderungen vorhanden. Änderungen zurücksetzen?'),
-      yesFn: function(form) { form.reset() },
+      yesFn: function() { form.reset() },
     });
 
     return false;
