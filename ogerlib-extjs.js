@@ -155,19 +155,23 @@ Oger.extjs.handleFormActionFailure = function(form, action) {
 
     case Ext.form.Action.CLIENT_INVALID:
       Oger.extjs.showInvalidFields(form);
-      //Ext.Msg.alert(Oger._('Fehler'), Oger._('Fehler im Formular. Bitte korrekt ausfüllen.'));
+      //Ext.create('Ext.window.MessageBox').alert(Oger._('Fehler'), Oger._('Fehler im Formular. Bitte korrekt ausfüllen.'));
       return true;
 
     case Ext.form.Action.CONNECT_FAILURE:
-      Ext.Msg.alert(Oger._('Fehler'), Oger._('Fehler bei der Datenübertragung. Eventuell nochmal versuchen.'));
+      Ext.create('Ext.window.MessageBox').alert(
+        Oger._('Fehler'),
+        Oger._('Fehler bei der Datenübertragung. Eventuell nochmal versuchen.'));
       return true;
 
     case Ext.form.Action.SERVER_INVALID:
-      //Ext.Msg.alert(Oger._('Fehler'), Oger._('Serverapplikation meldet successfull=false.'));
+      //Ext.create('Ext.window.MessageBox').alert(Oger._('Fehler'), Oger._('Serverapplikation meldet successfull=false.'));
       // handle only some situations
       var isHandled = false;
       if (action.result.msg != undefined) {
-        Ext.Msg.alert(Oger._('Fehler (App)'), action.result.msg,
+        Ext.create('Ext.window.MessageBox').alert(
+          Oger._('Fehler (App)'),
+          action.result.msg,
           // Messagebox.alert does not stop code, so handle code also here
           function(btn, text, opt) {
             if (action.result.code != undefined) {
@@ -184,17 +188,23 @@ Oger.extjs.handleFormActionFailure = function(form, action) {
 
       // last resor for server failure
       if (!isHandled) {
-        Ext.Msg.alert(Oger._('Fehler (Server)'), Oger._('Antwort des Servers fehlerhaft.'));
+        Ext.create('Ext.window.MessageBox').alert(
+          Oger._('Fehler (Server)'),
+          Oger._('Antwort des Servers fehlerhaft.'));
       }
       break;
 
     case Ext.form.Action.LOAD_FAILURE:
-      Ext.Msg.alert(Oger._('Fehler'), Oger._('Fehler beim Laden von Daten oder keine Daten bereitgestellt.'));
+      Ext.create('Ext.window.MessageBox').alert(
+        Oger._('Fehler'),
+        Oger._('Fehler beim Laden von Daten oder keine Daten bereitgestellt.'));
       // this can not be (or should not be) handled generaly, so do not return with true
       break;
 
     default:
-      Ext.Msg.alert(Oger._('Fehler'), Oger._('Unbekannter Submit/Action-Fehlertyp:' + action.failureType + '.'));
+      Ext.create('Ext.window.MessageBox').alert(
+        Oger._('Fehler'),
+        Oger._('Unbekannter Submit/Action-Fehlertyp:' + action.failureType + '.'));
       // this can not be (or should not be) handled generaly, so do not return with true
       break;
 
@@ -210,8 +220,11 @@ Oger.extjs.handleFormActionFailure = function(form, action) {
 */
 Oger.extjs.handleAjaxFailure = function(response, opts) {
 
-  Ext.Msg.alert(Oger._('Fehler'), Oger._('Request: ') + opts.url + '.<br>' +
-                                  Oger._('Response: ') + response.status + ' ' + response.statusText + '.');
+  Ext.create('Ext.window.MessageBox').alert(
+    Oger._('Fehler'),
+    Oger._('Request: ') + opts.url + '.<br>' +
+      Oger._('Response: ') + response.status + ' ' + response.statusText + '.'
+  );
 
 }; // eo ajax error handler
 
@@ -366,7 +379,9 @@ Oger.extjs.confirmDirtyAction = function(args) {
         },
         { text: Oger._('Details'),
           handler: function(button, event) {
-            Ext.Msg.alert(Oger._('Ungespeicherte Änderungen - Details'), Oger.extjs.getDirtyFieldsInfo(form));
+            Ext.create('Ext.window.MessageBox').alert(
+              Oger._('Ungespeicherte Änderungen - Details'),
+              Oger.extjs.getDirtyFieldsInfo(form));
           },
         },
       ],
@@ -569,7 +584,9 @@ Oger.extjs.showInvalidFields = function(form) {
       },
       { text: Oger._('Details'),
         handler: function(button, event) {
-          Ext.Msg.alert(Oger._('Formularfehler - Details'), Oger._('Feldnamen: ') + Oger.extjs.getInvalidFieldsInfo(form));
+          Ext.create('Ext.window.MessageBox').alert(
+            Oger._('Formularfehler - Details'),
+            Oger._('Feldnamen: ') + Oger.extjs.getInvalidFieldsInfo(form));
         },
       },
     ],
@@ -615,10 +632,14 @@ Oger.extjs.submitMsg = function(success, addMsg) {
     addMsg = '';
   }
   if (success) {
-    Ext.Msg.alert(Oger._('Ergebnis'), Oger._('Datensatz wurde erfolgreich gespeichert.' + addMsg));
+    Ext.create('Ext.window.MessageBox').alert(
+      Oger._('Ergebnis'),
+      Oger._('Datensatz wurde erfolgreich gespeichert.' + addMsg));
   }
   else {
-    Ext.Msg.alert(Oger._('Fehler'), Oger._('Datensatz konnte nicht gespeichert werden.'));
+    Ext.create('Ext.window.MessageBox').alert(
+      Oger._('Fehler'),
+      Oger._('Datensatz konnte nicht gespeichert werden.'));
   }
 
 };  // eo saved ok message
@@ -627,10 +648,16 @@ Oger.extjs.submitMsg = function(success, addMsg) {
 
 /**
 * Show a generic wait window for given millis
+ *
+ * OBSOLETED because using instances of Ext.window.MessageBox
+ * instead of Ext.Msg (or Ext.MesageBox) singleton
+ * resolves the problem.
+ * Remains only for docu to avoid writing again
 */
+/*
 Oger.showWaitWin = function(milli, modal) {
 
-  //Ext.Msg.wait(Oger._('Das dauert leider etwas ...'), Oger._('Bitte warten'));
+  //Ext.create('Ext.window.MessageBox').wait(Oger._('Das dauert leider etwas ...'), Oger._('Bitte warten'));
   //Ext.Function.defer(function() { Ext.Msg.hide; }, milli);
 
   // Ext.Message is overwritten by any other error message and overwrites other messages too
@@ -662,6 +689,7 @@ Oger.showWaitWin = function(milli, modal) {
   Ext.Function.defer(function() { waitWin.close(); }, milli);
 
 }  // eo show wait window
+*/
 
 
 
@@ -670,8 +698,11 @@ Oger.showWaitWin = function(milli, modal) {
  * form.reset() does not reset null values in hidden fields and
  *              does not reset values of FileField
  * @form: Form which dirty state should be removed
+ *
+ * OBSOLETED because not better than original extjs form.reset()
+ * Remains only for docu to avoid writing again
  */
- /* OBSOLETED because not better than original extjs form.reset()
+ /*
 Oger.extjs.resetForm = function(form) {
 
   // if a form panel is given than get the underlaying basic form
