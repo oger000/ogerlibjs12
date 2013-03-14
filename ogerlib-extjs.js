@@ -598,6 +598,11 @@ Oger.extjs.showInvalidFields = function(form) {
 
 /**
 * Repair invalid combo values. (set to null by error)
+* Necessary for Extjs 4.1.x to include comboboxes that
+* change their content from anything to empty string
+* (and the empty string has no key?).
+* This change result in an key value of null which
+* is not submitted by default.
 * @form: Form to test the fields
 */
 Oger.extjs.repairComboValues = function(form) {
@@ -623,7 +628,10 @@ Oger.extjs.repairComboValues = function(form) {
 
 /**
 * Show a generic form saved message
+*
+* OBSOLTED becase unused for a long time
 */
+/*
 Oger.extjs.submitMsg = function(success, addMsg) {
   if (typeof success == 'undefined' || success === null) {
     success = true;
@@ -643,7 +651,7 @@ Oger.extjs.submitMsg = function(success, addMsg) {
   }
 
 };  // eo saved ok message
-
+*/
 
 
 /**
