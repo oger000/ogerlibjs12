@@ -165,32 +165,27 @@ Oger.extjs.handleFormActionFailure = function(form, action) {
       return true;
 
     case Ext.form.Action.SERVER_INVALID:
+
       //Ext.create('Ext.window.MessageBox').alert(Oger._('Fehler'), Oger._('Serverapplikation meldet successfull=false.'));
-      // handle only some situations
+
+      // this handles only some situations
       var isHandled = false;
       if (action.result.msg != undefined) {
         Ext.create('Ext.window.MessageBox').alert(
           Oger._('Fehler (App)'),
-          action.result.msg,
-          // Messagebox.alert does not stop code, so handle code also here
-          function(btn, text, opt) {
-            if (action.result.code != undefined) {
-              action.result.code();
-            };
-          }
-        );
-        isHandled = true;
-      }
-      if (!isHandled && action.result.code != undefined) {
-        action.result.code();
+          action.result.msg);
         isHandled = true;
       }
 
       // last resor for server failure
       if (!isHandled) {
+        var moreText = '';
+        if (action && action.response && action.response.responseText) {
+          moreText = ' ' + action.response.responseText;
+        }
         Ext.create('Ext.window.MessageBox').alert(
           Oger._('Fehler (Server)'),
-          Oger._('Antwort des Servers fehlerhaft.'));
+          Oger._('Antwort des Servers fehlerhaft.') + moreText);
       }
       break;
 
