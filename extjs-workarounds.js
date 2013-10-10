@@ -55,10 +55,11 @@
         }
         Ext.create('Ext.window.MessageBox').alert(
           'Warning',
-          'Empty response from server. ' +
+          'Empty response from server (changed to success=false now). ' +
             'Url: ' + response.request.options.url +
             '; Params: ' + paramStr +
             '.');
+        response.responseText = '{"success":false}';
       }
 
       // return the return-value from the original function

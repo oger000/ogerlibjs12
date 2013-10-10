@@ -148,6 +148,23 @@ Oger.extjs.adjustToFit = function(cmp, viewPort) {
 * General handler for form action errors.
 * On "insufficient" handled failures return false to notify
 * that subsequent handling is expected.
+*
+* ux-overwrite in Ext.data.Connection.prototype.createResponse
+* preprocess an empty response:
+* create an error message and
+* change an empty response to '{"success":false}'
+* so extjs handles this as error in (i hope so) most cases
+*
+* form.submit:
+* - php-parse error: submit.success
+* - uncaught php exception: submit.success
+* - empty response: submit.success
+* - success=false: submit.failure
+* form.load:
+* - php-parse error:
+* - uncaught php exception:
+* - empty response:
+* - success=false:
 */
 Oger.extjs.handleFormActionFailure = function(form, action) {
 
@@ -168,9 +185,10 @@ Oger.extjs.handleFormActionFailure = function(form, action) {
 
       //Ext.create('Ext.window.MessageBox').alert(Oger._('Fehler'), Oger._('Serverapplikation meldet successfull=false.'));
 
-      // this handles only some situations
+      // if response has msg property we show this
+      // and hope that this is a failure message
       var isHandled = false;
-      if (action.result.msg != undefined) {
+      if (action.result && action.result.msg) {
         Ext.create('Ext.window.MessageBox').alert(
           Oger._('Fehler (App)'),
           action.result.msg);
@@ -179,13 +197,13 @@ Oger.extjs.handleFormActionFailure = function(form, action) {
 
       // last resor for server failure
       if (!isHandled) {
-        var moreText = '';
+        var responseText = '';
         if (action && action.response && action.response.responseText) {
-          moreText = ' ' + action.response.responseText;
+          responseText = ' ' + action.response.responseText;
         }
         Ext.create('Ext.window.MessageBox').alert(
           Oger._('Fehler (Server)'),
-          Oger._('Antwort des Servers fehlerhaft.') + moreText);
+          Oger._('Antwort des Servers leer oder ohne Erfolgskennung.') + responseText);
       }
       break;
 
