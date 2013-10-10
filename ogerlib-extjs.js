@@ -203,7 +203,9 @@ Oger.extjs.handleFormActionFailure = function(form, action) {
         }
         Ext.create('Ext.window.MessageBox').alert(
           Oger._('Fehler (Server)'),
-          Oger._('Antwort des Servers leer oder ohne Erfolgskennung.') + responseText);
+          //Oger._('Antwort des Servers leer oder ohne Erfolgskennung.') + responseText);
+          // hide details
+          Oger._('Antwort des Servers leer oder ohne Erfolgskennung.'));
       }
       break;
 
