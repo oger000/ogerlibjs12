@@ -166,12 +166,14 @@ Oger.extjs.adjustToFit = function(cmp, viewPort) {
 * - empty response:
 * - success=false:
 */
-Oger.extjs.handleFormActionFailure = function(form, action) {
+Oger.extjs.showFormActionFailure = function(form, action) {
 
   switch (action.failureType) {
 
     case Ext.form.Action.CLIENT_INVALID:
-      Oger.extjs.showInvalidFields(form);
+      if (form) {
+        Oger.extjs.showInvalidFields(form);
+      }
       //Ext.create('Ext.window.MessageBox').alert(Oger._('Fehler'), Oger._('Fehler im Formular. Bitte korrekt ausfüllen.'));
       return true;
 
@@ -233,7 +235,7 @@ Oger.extjs.handleFormActionFailure = function(form, action) {
 /*
 * General handler for ajax failures
 */
-Oger.extjs.handleAjaxFailure = function(response, opts) {
+Oger.extjs.showAjaxFailure = function(response, opts) {
 
   Ext.create('Ext.window.MessageBox').alert(
     Oger._('Fehler'),
