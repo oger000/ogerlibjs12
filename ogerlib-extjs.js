@@ -782,3 +782,21 @@ Oger.extjs.createOnce = function (query, className, classDef) {
 
   return cmp;
 }  // eo create once
+
+
+
+/**
+ * Define Extjs Messagebox with close action destroy
+ */
+Ext.define('Oger.MessageBox', {
+  extend: 'Ext.window.MessageBox',
+  alias: 'widget.ogerMsgBox',
+  //closeAction: 'destroy',
+
+  listeners: {
+    hide: function(cmp, opts) {
+      cmp.destroy();
+    },
+  },
+
+});
