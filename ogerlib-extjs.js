@@ -786,6 +786,29 @@ Oger.extjs.createOnce = function (query, className, classDef) {
 
 
 /**
+ * Get post parameters for store read (load?) action
+ * see <http://stackoverflow.com/questions/11241803/how-do-you-get-all-store-parameters-extjs-4-1>
+ */
+Oger.extjs.getStoreActionParams = function (store) {
+
+  var op = new Ext.data.Operation({
+    groupers:   store.groupers.items,
+    page:       store.currentPage,
+    start:      (store.currentPage - 1) * store.pageSize,
+    limit:      store.pageSize,
+    addRecords: false,
+    action:     'read',
+    filters:    store.filters.items,
+    sorters:    store.getSorters(),
+  });
+
+  var req = store.getProxy().buildRequest(op);
+  return req.params;
+}  // eo get store action params
+
+
+
+/**
  * Define Extjs Messagebox with close action destroy
  */
 Ext.define('Oger.extjs.MessageBox', {
