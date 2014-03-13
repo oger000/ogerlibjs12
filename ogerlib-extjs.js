@@ -809,6 +809,23 @@ Oger.extjs.getStoreActionParams = function (store) {
 
 
 /**
+ * Show messagebox that expires after timeout and does autoclose.
+ */
+Oger.extjs.expireAlert = function (title, msg, fn, scope, timeout) {
+
+  if (timeout == null) {
+    timeout = 1000;
+  }
+
+  var mbox = Ext.create('Oger.extjs.MessageBox');
+  mbox.alert(title, msg, fn, scope);
+  Ext.Function.defer(function() { mbox.close(); }, timeout);
+}  // eo flash msg
+
+
+
+
+/**
  * Define Extjs Messagebox with close action destroy
  */
 Ext.define('Oger.extjs.MessageBox', {
