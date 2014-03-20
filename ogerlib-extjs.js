@@ -174,24 +174,24 @@ Oger.extjs.showFormActionFailure = function(form, action) {
       if (form) {
         Oger.extjs.showInvalidFields(form);
       }
-      //Ext.create('Ext.window.MessageBox').alert(Oger._('Fehler'), Oger._('Fehler im Formular. Bitte korrekt ausfüllen.'));
+      //Ext.create('Oger.extjs.MessageBox').alert(Oger._('Fehler'), Oger._('Fehler im Formular. Bitte korrekt ausfüllen.'));
       return true;
 
     case Ext.form.Action.CONNECT_FAILURE:
-      Ext.create('Ext.window.MessageBox').alert(
+      Ext.create('Oger.extjs.MessageBox').alert(
         Oger._('Fehler'),
         Oger._('Fehler bei der Datenübertragung. Eventuell nochmal versuchen.'));
       return true;
 
     case Ext.form.Action.SERVER_INVALID:
 
-      //Ext.create('Ext.window.MessageBox').alert(Oger._('Fehler'), Oger._('Serverapplikation meldet successfull=false.'));
+      //Ext.create('Oger.extjs.MessageBox').alert(Oger._('Fehler'), Oger._('Serverapplikation meldet successfull=false.'));
 
       // if response has msg property we show this
       // and hope that this is a failure message
       var isHandled = false;
       if (action.result && action.result.msg) {
-        Ext.create('Ext.window.MessageBox').alert(
+        Ext.create('Oger.extjs.MessageBox').alert(
           Oger._('Fehler (App)'),
           action.result.msg);
         isHandled = true;
@@ -203,7 +203,7 @@ Oger.extjs.showFormActionFailure = function(form, action) {
         if (action && action.response && action.response.responseText) {
           responseText = ' ' + action.response.responseText;
         }
-        Ext.create('Ext.window.MessageBox').alert(
+        Ext.create('Oger.extjs.MessageBox').alert(
           Oger._('Fehler (Server)'),
           //Oger._('Antwort des Servers leer oder ohne Erfolgskennung.') + responseText);
           // hide details
@@ -212,14 +212,14 @@ Oger.extjs.showFormActionFailure = function(form, action) {
       break;
 
     case Ext.form.Action.LOAD_FAILURE:
-      Ext.create('Ext.window.MessageBox').alert(
+      Ext.create('Oger.extjs.MessageBox').alert(
         Oger._('Fehler'),
         Oger._('Fehler beim Laden von Daten oder keine Daten bereitgestellt.'));
       // this can not be (or should not be) handled generaly, so do not return with true
       break;
 
     default:
-      Ext.create('Ext.window.MessageBox').alert(
+      Ext.create('Oger.extjs.MessageBox').alert(
         Oger._('Fehler'),
         Oger._('Unbekannter Submit/Action-Fehlertyp:' + action.failureType + '.'));
       // this can not be (or should not be) handled generaly, so do not return with true
@@ -237,7 +237,7 @@ Oger.extjs.showFormActionFailure = function(form, action) {
 */
 Oger.extjs.showAjaxFailure = function(response, opts) {
 
-  Ext.create('Ext.window.MessageBox').alert(
+  Ext.create('Oger.extjs.MessageBox').alert(
     Oger._('Fehler'),
     Oger._('Request: ') + opts.url + '.<br>' +
       Oger._('Response: ') + response.status + ' ' + response.statusText + '.'
@@ -299,7 +299,7 @@ Oger.extjs.getDirtyFieldsInfo = function(form) {
 
   Ext.define('App.view.MyDialog', {
     show: function() {
-        var dialog = Ext.create('Ext.window.MessageBox', {
+        var dialog = Ext.create('Oger.extjs.MessageBox', {
             buttons: [{
                 text: 'baz',
                 iconCls: 'icon-add',
@@ -396,7 +396,7 @@ Oger.extjs.confirmDirtyAction = function(args) {
         },
         { text: Oger._('Details'),
           handler: function(button, event) {
-            Ext.create('Ext.window.MessageBox').alert(
+            Ext.create('Oger.extjs.MessageBox').alert(
               Oger._('Ungespeicherte Änderungen - Details'),
               Oger.extjs.getDirtyFieldsInfo(form));
           },
@@ -601,7 +601,7 @@ Oger.extjs.showInvalidFields = function(form) {
       },
       { text: Oger._('Details'),
         handler: function(button, event) {
-          Ext.create('Ext.window.MessageBox').alert(
+          Ext.create('Oger.extjs.MessageBox').alert(
             Oger._('Formularfehler - Details'),
             Oger._('Feldnamen: ') + Oger.extjs.getInvalidFieldsInfo(form));
         },
@@ -657,12 +657,12 @@ Oger.extjs.submitMsg = function(success, addMsg) {
     addMsg = '';
   }
   if (success) {
-    Ext.create('Ext.window.MessageBox').alert(
+    Ext.create('Oger.extjs.MessageBox').alert(
       Oger._('Ergebnis'),
       Oger._('Datensatz wurde erfolgreich gespeichert.' + addMsg));
   }
   else {
-    Ext.create('Ext.window.MessageBox').alert(
+    Ext.create('Oger.extjs.MessageBox').alert(
       Oger._('Fehler'),
       Oger._('Datensatz konnte nicht gespeichert werden.'));
   }
@@ -674,7 +674,7 @@ Oger.extjs.submitMsg = function(success, addMsg) {
 /**
 * Show a generic wait window for given millis
  *
- * OBSOLETED because using instances of Ext.window.MessageBox
+ * OBSOLETED because using instances of Oger.extjs.MessageBox
  * instead of Ext.Msg (or Ext.MesageBox) singleton
  * resolves the problem.
  * Remains only for docu to avoid writing again
@@ -682,7 +682,7 @@ Oger.extjs.submitMsg = function(success, addMsg) {
 /*
 Oger.showWaitWin = function(milli, modal) {
 
-  //Ext.create('Ext.window.MessageBox').wait(Oger._('Das dauert leider etwas ...'), Oger._('Bitte warten'));
+  //Ext.create('Oger.extjs.MessageBox').wait(Oger._('Das dauert leider etwas ...'), Oger._('Bitte warten'));
   //Ext.Function.defer(function() { Ext.Msg.hide; }, milli);
 
   // Ext.Message is overwritten by any other error message and overwrites other messages too
