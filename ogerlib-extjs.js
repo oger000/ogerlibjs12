@@ -839,4 +839,4 @@ Ext.define('Oger.extjs.MessageBox', {
     },
   },
 
-});
+});  // eo oger message box
