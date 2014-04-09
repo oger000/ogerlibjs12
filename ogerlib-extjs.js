@@ -838,5 +838,4 @@ Ext.define('Oger.extjs.MessageBox', {
       cmp.destroy();
     },
   },
-
 });  // eo oger message box
