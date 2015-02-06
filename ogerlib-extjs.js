@@ -9,10 +9,10 @@
 * Fake Oger namespace. (maybe better use constructor function?)
 */
 if (typeof Oger == 'undefined') {
-  Oger = {};
+	Oger = {};
 }
 if (typeof Oger.extjs == 'undefined') {
-  Oger.extjs = {};
+	Oger.extjs = {};
 }
 
 
@@ -30,40 +30,40 @@ if (typeof Oger.extjs == 'undefined') {
 */
 Oger.extjs.moveToFit = function(cmp, viewPort) {
 
-  // see comment block in Oger.extjs.adjustToFit
-  // for more posibilities to detect browser size
+	// see comment block in Oger.extjs.adjustToFit
+	// for more posibilities to detect browser size
 
-  var vp = {
-    x: 0,
-    y: 0,
-    width: window.innerWidth,
-    height: window.innerHeight,
-  }
-  if (viewPort) {
-    vp.x = viewPort.getPosition()[0];
-    vp.y = viewPort.getPosition()[1];
-    vp.width = viewPort.getWidth();
-    vp.height = viewPort.getHeight();
-  }
+	var vp = {
+		x: 0,
+		y: 0,
+		width: window.innerWidth,
+		height: window.innerHeight,
+	}
+	if (viewPort) {
+		vp.x = viewPort.getPosition()[0];
+		vp.y = viewPort.getPosition()[1];
+		vp.width = viewPort.getWidth();
+		vp.height = viewPort.getHeight();
+	}
 
-  var c = {}
-  c.x = c.oriX = cmp.getPosition()[0];
-  c.y = c.oriY = cmp.getPosition()[1];
-  c.width = c.oriWidth = cmp.getWidth();
-  c.height = c.oriHeight = cmp.getHeight();
+	var c = {}
+	c.x = c.oriX = cmp.getPosition()[0];
+	c.y = c.oriY = cmp.getPosition()[1];
+	c.width = c.oriWidth = cmp.getWidth();
+	c.height = c.oriHeight = cmp.getHeight();
 
 
-  // test right, bottom, left, top
-  // this order forces the left upper corner into the
-  // most upper left position inside the viewport
-  c.x = Math.min(c.x, vp.x + vp.width - c.width);
-  c.y = Math.min(c.y, vp.y + vp.height - c.height);
-  c.x = Math.max(c.x, vp.x);
-  c.y = Math.max(c.y, vp.y);
+	// test right, bottom, left, top
+	// this order forces the left upper corner into the
+	// most upper left position inside the viewport
+	c.x = Math.min(c.x, vp.x + vp.width - c.width);
+	c.y = Math.min(c.y, vp.y + vp.height - c.height);
+	c.x = Math.max(c.x, vp.x);
+	c.y = Math.max(c.y, vp.y);
 
-  if (c.x != c.oriX || c.y != c.oriY) {
-    cmp.setPosition(c.x, c.y);
-  }
+	if (c.x != c.oriX || c.y != c.oriY) {
+		cmp.setPosition(c.x, c.y);
+	}
 }  // eo move
 
 
@@ -79,67 +79,67 @@ Oger.extjs.moveToFit = function(cmp, viewPort) {
 Oger.extjs.adjustToFit = function(cmp, viewPort) {
 
 /*
-  // ONLY FOR DOCUMENTATION
+	// ONLY FOR DOCUMENTATION
 
-  var viewportwidth;
-  var viewportheight;
+	var viewportwidth;
+	var viewportheight;
 
-  // the more standards compliant browsers (mozilla/netscape/opera/IE7) use window.innerWidth and window.innerHeight
+	// the more standards compliant browsers (mozilla/netscape/opera/IE7) use window.innerWidth and window.innerHeight
 
-  if (window.innerWidth != undefined) {
-    viewPortwidth = window.innerWidth,
-    viewPortheight = window.innerHeight
-  }
+	if (window.innerWidth != undefined) {
+		viewPortwidth = window.innerWidth,
+		viewPortheight = window.innerHeight
+	}
 
-  // IE6 in standards compliant mode (i.e. with a valid doctype as the first line in the document)
+	// IE6 in standards compliant mode (i.e. with a valid doctype as the first line in the document)
 
-  else if (document.documentElement != undefined &&
-           document.documentElement.clientWidth != undefined &&
-           document.documentElement.clientWidth != 0) {
-    viewPortwidth = document.documentElement.clientWidth,
-    viewPortheight = document.documentElement.clientHeight
-  }
+	else if (document.documentElement != undefined &&
+					 document.documentElement.clientWidth != undefined &&
+					 document.documentElement.clientWidth != 0) {
+		viewPortwidth = document.documentElement.clientWidth,
+		viewPortheight = document.documentElement.clientHeight
+	}
 
-  // older versions of IE
+	// older versions of IE
 
-  else {
-    viewPortwidth = document.getElementsByTagName('body')[0].clientWidth,
-    viewPortheight = document.getElementsByTagName('body')[0].clientHeight
-  }
+	else {
+		viewPortwidth = document.getElementsByTagName('body')[0].clientWidth,
+		viewPortheight = document.getElementsByTagName('body')[0].clientHeight
+	}
 
-  // maybe try: document.body.clientHeight
+	// maybe try: document.body.clientHeight
 */
 
-  var vp = {
-    x: 0,
-    y: 0,
-    width: window.innerWidth,
-    height: window.innerHeight,
-  }
-  if (viewPort) {
-    vp.x = viewPort.getPosition()[0];
-    vp.y = viewPort.getPosition()[1];
-    vp.width = viewPort.getWidth();
-    vp.height = viewPort.getHeight();
-  }
+	var vp = {
+		x: 0,
+		y: 0,
+		width: window.innerWidth,
+		height: window.innerHeight,
+	}
+	if (viewPort) {
+		vp.x = viewPort.getPosition()[0];
+		vp.y = viewPort.getPosition()[1];
+		vp.width = viewPort.getWidth();
+		vp.height = viewPort.getHeight();
+	}
 
-  var c = {}
-  c.x = c.oriX = cmp.getPosition()[0];
-  c.y = c.oriY = cmp.getPosition()[1];
-  c.width = c.oriWidth = cmp.getWidth();
-  c.height = c.oriHeight = cmp.getHeight();
+	var c = {}
+	c.x = c.oriX = cmp.getPosition()[0];
+	c.y = c.oriY = cmp.getPosition()[1];
+	c.width = c.oriWidth = cmp.getWidth();
+	c.height = c.oriHeight = cmp.getHeight();
 
-  // if size does not fit at all, than resize first.
-  // to minimize resize events apply at once
-  c.width = Math.min(c.width, vp.width);
-  c.height = Math.min(c.height, vp.height);
+	// if size does not fit at all, than resize first.
+	// to minimize resize events apply at once
+	c.width = Math.min(c.width, vp.width);
+	c.height = Math.min(c.height, vp.height);
 
-  if (c.width != c.oriWidth || c.height != c.oriHeight) {
-    cmp.setSize(c.width, c.height);
-  }
+	if (c.width != c.oriWidth || c.height != c.oriHeight) {
+		cmp.setSize(c.width, c.height);
+	}
 
-  // now size of window fits, so we can move to final location
-  Oger.extjs.moveToFit(cmp, viewPoint);
+	// now size of window fits, so we can move to final location
+	Oger.extjs.moveToFit(cmp, viewPoint);
 }  // eo adjust
 
 
@@ -168,66 +168,66 @@ Oger.extjs.adjustToFit = function(cmp, viewPort) {
 */
 Oger.extjs.showFormActionFailure = function(form, action) {
 
-  switch (action.failureType) {
+	switch (action.failureType) {
 
-    case Ext.form.Action.CLIENT_INVALID:
-      if (form) {
-        Oger.extjs.showInvalidFields(form);
-      }
-      //Ext.create('Oger.extjs.MessageBox').alert(Oger._('Fehler'), Oger._('Fehler im Formular. Bitte korrekt ausfüllen.'));
-      return true;
+		case Ext.form.Action.CLIENT_INVALID:
+			if (form) {
+				Oger.extjs.showInvalidFields(form);
+			}
+			//Ext.create('Oger.extjs.MessageBox').alert(Oger._('Fehler'), Oger._('Fehler im Formular. Bitte korrekt ausfüllen.'));
+			return true;
 
-    case Ext.form.Action.CONNECT_FAILURE:
-      Ext.create('Oger.extjs.MessageBox').alert(
-        Oger._('Fehler'),
-        Oger._('Fehler bei der Datenübertragung. Eventuell nochmal versuchen.'));
-      return true;
+		case Ext.form.Action.CONNECT_FAILURE:
+			Ext.create('Oger.extjs.MessageBox').alert(
+				Oger._('Fehler'),
+				Oger._('Fehler bei der Datenübertragung. Eventuell nochmal versuchen.'));
+			return true;
 
-    case Ext.form.Action.SERVER_INVALID:
+		case Ext.form.Action.SERVER_INVALID:
 
-      //Ext.create('Oger.extjs.MessageBox').alert(Oger._('Fehler'), Oger._('Serverapplikation meldet successfull=false.'));
+			//Ext.create('Oger.extjs.MessageBox').alert(Oger._('Fehler'), Oger._('Serverapplikation meldet successfull=false.'));
 
-      // if response has msg property we show this
-      // and hope that this is a failure message
-      var isHandled = false;
-      if (action.result && action.result.msg) {
-        Ext.create('Oger.extjs.MessageBox').alert(
-          Oger._('Fehler (App)'),
-          action.result.msg);
-        isHandled = true;
-      }
+			// if response has msg property we show this
+			// and hope that this is a failure message
+			var isHandled = false;
+			if (action.result && action.result.msg) {
+				Ext.create('Oger.extjs.MessageBox').alert(
+					Oger._('Fehler (App)'),
+					action.result.msg);
+				isHandled = true;
+			}
 
-      // last resor for server failure
-      if (!isHandled) {
-        var responseText = '';
-        if (action && action.response && action.response.responseText) {
-          responseText = ' ' + action.response.responseText;
-        }
-        Ext.create('Oger.extjs.MessageBox').alert(
-          Oger._('Fehler (Server)'),
-          //Oger._('Antwort des Servers leer oder ohne Erfolgskennung.') + responseText);
-          // hide details
-          Oger._('Antwort des Servers leer oder ohne Erfolgskennung.'));
-      }
-      break;
+			// last resor for server failure
+			if (!isHandled) {
+				var responseText = '';
+				if (action && action.response && action.response.responseText) {
+					responseText = ' ' + action.response.responseText;
+				}
+				Ext.create('Oger.extjs.MessageBox').alert(
+					Oger._('Fehler (Server)'),
+					//Oger._('Antwort des Servers leer oder ohne Erfolgskennung.') + responseText);
+					// hide details
+					Oger._('Antwort des Servers leer oder ohne Erfolgskennung.'));
+			}
+			break;
 
-    case Ext.form.Action.LOAD_FAILURE:
-      Ext.create('Oger.extjs.MessageBox').alert(
-        Oger._('Fehler'),
-        Oger._('Fehler beim Laden von Daten oder keine Daten bereitgestellt.'));
-      // this can not be (or should not be) handled generaly, so do not return with true
-      break;
+		case Ext.form.Action.LOAD_FAILURE:
+			Ext.create('Oger.extjs.MessageBox').alert(
+				Oger._('Fehler'),
+				Oger._('Fehler beim Laden von Daten oder keine Daten bereitgestellt.'));
+			// this can not be (or should not be) handled generaly, so do not return with true
+			break;
 
-    default:
-      Ext.create('Oger.extjs.MessageBox').alert(
-        Oger._('Fehler'),
-        Oger._('Unbekannter Submit/Action-Fehlertyp:' + action.failureType + '.'));
-      // this can not be (or should not be) handled generaly, so do not return with true
-      break;
+		default:
+			Ext.create('Oger.extjs.MessageBox').alert(
+				Oger._('Fehler'),
+				Oger._('Unbekannter Submit/Action-Fehlertyp:' + action.failureType + '.'));
+			// this can not be (or should not be) handled generaly, so do not return with true
+			break;
 
-  }  // eo switch
+	}  // eo switch
 
-  return false;
+	return false;
 }; // eo form action error handler
 
 
@@ -237,11 +237,11 @@ Oger.extjs.showFormActionFailure = function(form, action) {
 */
 Oger.extjs.showAjaxFailure = function(response, opts) {
 
-  Ext.create('Oger.extjs.MessageBox').alert(
-    Oger._('Fehler'),
-    Oger._('Request: ') + opts.url + '.<br>' +
-      Oger._('Response: ') + response.status + ' ' + response.statusText + '.'
-  );
+	Ext.create('Oger.extjs.MessageBox').alert(
+		Oger._('Fehler'),
+		Oger._('Request: ') + opts.url + '.<br>' +
+			Oger._('Response: ') + response.status + ' ' + response.statusText + '.'
+	);
 
 }; // eo ajax error handler
 
@@ -252,43 +252,43 @@ Oger.extjs.showAjaxFailure = function(response, opts) {
  */
 Oger.extjs.getDirtyFieldsInfo = function(form) {
 
-  // if no form given it cannot be dirty?
-  if (!form) {
-    return true;
-  }
+	// if no form given it cannot be dirty?
+	if (!form) {
+		return true;
+	}
 
-  // if a form panel is given than get the underlaying basic form
-  if (typeof form.getForm == 'function') {
-    form = form.getForm();
-  }
+	// if a form panel is given than get the underlaying basic form
+	if (typeof form.getForm == 'function') {
+		form = form.getForm();
+	}
 
-  var dirtyMsg = '';
+	var dirtyMsg = '';
 
-  var dirtyFlag = form.isDirty();
-  if (dirtyFlag) {   // use own dirty flag instead of form.isDirty()
+	var dirtyFlag = form.isDirty();
+	if (dirtyFlag) {   // use own dirty flag instead of form.isDirty()
 
-    dirtyMsg = Oger._('Geändert:');
-    //dirtyMsg += ' ' + form.getValues(true, true);
+		dirtyMsg = Oger._('Geändert:');
+		//dirtyMsg += ' ' + form.getValues(true, true);
 
-    var processField = function(field) {
-      if (field.isXType('radiogroup') || field.isXType('checkboxgroup')) {
-        // items are separate fields so handling of group is not necessary
-      }
-      else {
-        if (field.isDirty()) {
-          dirtyMsg += ' ' + field.fieldLabel + ' (' + field.name + ')';
-          if (field.isXType('radiofield') || field.isXType('checkboxfield')) {
-            dirtyMsg += '[' + field.inputValue + ']';
-          }
-          dirtyMsg += ': old=' + field.originalValue + ', new=' + field.getValue() + ';';
-        };
-      }
-    };
+		var processField = function(field) {
+			if (field.isXType('radiogroup') || field.isXType('checkboxgroup')) {
+				// items are separate fields so handling of group is not necessary
+			}
+			else {
+				if (field.isDirty()) {
+					dirtyMsg += ' ' + field.fieldLabel + ' (' + field.name + ')';
+					if (field.isXType('radiofield') || field.isXType('checkboxfield')) {
+						dirtyMsg += '[' + field.inputValue + ']';
+					}
+					dirtyMsg += ': old=' + field.originalValue + ', new=' + field.getValue() + ';';
+				};
+			}
+		};
 
-    form.getFields().each(processField);
-  }  // eo show msg
+		form.getFields().each(processField);
+	}  // eo show msg
 
-  return dirtyMsg;
+	return dirtyMsg;
 }  // eo dirty fields message
 
 
@@ -297,27 +297,27 @@ Oger.extjs.getDirtyFieldsInfo = function(form) {
  * Memo from: http://stackoverflow.com/questions/6261013/extjs-message-box-with-custom-buttons
  * for confirmDirtyClose and confirmDirtyAction
 
-  Ext.define('App.view.MyDialog', {
-    show: function() {
-        var dialog = Ext.create('Oger.extjs.MessageBox', {
-            buttons: [{
-                text: 'baz',
-                iconCls: 'icon-add',
-                handler: function() {
-                    dialog.close();
-                }
-            }]
-        });
+	Ext.define('App.view.MyDialog', {
+		show: function() {
+				var dialog = Ext.create('Oger.extjs.MessageBox', {
+						buttons: [{
+								text: 'baz',
+								iconCls: 'icon-add',
+								handler: function() {
+										dialog.close();
+								}
+						}]
+				});
 
-        dialog.show({
-            title: 'foo!',
-            msg: '<p>bar?</p>',
-            icon: Ext.MessageBox.WARNING
-        });
+				dialog.show({
+						title: 'foo!',
+						msg: '<p>bar?</p>',
+						icon: Ext.MessageBox.WARNING
+				});
 
-        dialog.setHeight(160);
-        dialog.setWidth(420);
-    }
+				dialog.setHeight(160);
+				dialog.setWidth(420);
+		}
 });
 var dialog = Ext.create('App.view.MyDialog');
 dialog.show();
@@ -342,83 +342,83 @@ dialog.show();
 */
 Oger.extjs.confirmDirtyAction = function(args) {
 
-  var form = args.form;
-  if (typeof form.getForm == 'function') {
-    form = form.getForm();
-  }
+	var form = args.form;
+	if (typeof form.getForm == 'function') {
+		form = form.getForm();
+	}
 
-  // only ask if form is dirty
-  // (normaly this method should only be called if the form is dirty !!!)
-  if (form.isDirty()) {
+	// only ask if form is dirty
+	// (normaly this method should only be called if the form is dirty !!!)
+	if (form.isDirty()) {
 
-    var title = (args.title ? args.title : Oger._('Bestätigung erforderlich'));
-    var msg = (args.msg ? args.msg : Oger._('Message fehlt!'));
+		var title = (args.title ? args.title : Oger._('Bestätigung erforderlich'));
+		var msg = (args.msg ? args.msg : Oger._('Message fehlt!'));
 
-    var yesText = (args.yesText ? args.yesText : Oger._('Ja'));
-    var noText = (args.noText ? args.noText : Oger._('Nein'));
-    var cancelText = (args.cancelText ? args.cancelText : Oger._('Abbrechen'));
+		var yesText = (args.yesText ? args.yesText : Oger._('Ja'));
+		var noText = (args.noText ? args.noText : Oger._('Nein'));
+		var cancelText = (args.cancelText ? args.cancelText : Oger._('Abbrechen'));
 
-    var confirmWin = Ext.create('Ext.window.Window', {
-      title: title,
-      width: 400,
-      height: 200,
-      modal: true,
-      autoScroll: true,
-      layout: 'fit',
-      border: false,
+		var confirmWin = Ext.create('Ext.window.Window', {
+			title: title,
+			width: 400,
+			height: 200,
+			modal: true,
+			autoScroll: true,
+			layout: 'fit',
+			border: false,
 
-      items: [
-        { xtype: 'form',
-          layout: 'fit',
-          bodyPadding: 15,
-          items: [
-            { xtype: 'textarea', value: msg, fieldStyle: 'text-align:center;border:none;',
-              fieldStyle: 'text-align:center;border:none;',
-            },
-          ]
+			items: [
+				{ xtype: 'form',
+					layout: 'fit',
+					bodyPadding: 15,
+					items: [
+						{ xtype: 'textarea', value: msg, fieldStyle: 'text-align:center;border:none;',
+							fieldStyle: 'text-align:center;border:none;',
+						},
+					]
 
-        }
-      ],
+				}
+			],
 
-      buttonAlign: 'center',
-      buttons: [
-        { text: yesText,
-          handler: function(button, event) {
-            args.yesFn();
-            this.up('window').close();
-          },
-        },
-        { text: cancelText,
-          handler: function(button, event) {
-            // do nothing
-            this.up('window').close();
-          },
-        },
-        { text: Oger._('Details'),
-          handler: function(button, event) {
-            Ext.create('Oger.extjs.MessageBox').alert(
-              Oger._('Ungespeicherte Änderungen - Details'),
-              Oger.extjs.getDirtyFieldsInfo(form));
-          },
-        },
-      ],
-    });
+			buttonAlign: 'center',
+			buttons: [
+				{ text: yesText,
+					handler: function(button, event) {
+						args.yesFn();
+						this.up('window').close();
+					},
+				},
+				{ text: cancelText,
+					handler: function(button, event) {
+						// do nothing
+						this.up('window').close();
+					},
+				},
+				{ text: Oger._('Details'),
+					handler: function(button, event) {
+						Ext.create('Oger.extjs.MessageBox').alert(
+							Oger._('Ungespeicherte Änderungen - Details'),
+							Oger.extjs.getDirtyFieldsInfo(form));
+					},
+				},
+			],
+		});
 
-    if (noText) {
-      confirmWin.add(Ext.create('Ext.Button', {
-        text: noText,
-        handler: function(button, event) {
-          if (args.noFn) {
-            args.noFn();
-          }
-          this.up('window').close();
-        },
-      }));
-    }
+		if (noText) {
+			confirmWin.add(Ext.create('Ext.Button', {
+				text: noText,
+				handler: function(button, event) {
+					if (args.noFn) {
+						args.noFn();
+					}
+					this.up('window').close();
+				},
+			}));
+		}
 
-    confirmWin.show();
-    return false;
-  }
+		confirmWin.show();
+		return false;
+	}
 
 }  // eo confirm action on dirty form
 
@@ -431,22 +431,22 @@ Oger.extjs.confirmDirtyAction = function(args) {
 */
 Oger.extjs.confirmDirtyClose = function(win, form) {
 
-  if (!form) {
-    form = win.down('form');
-  }
-  if (typeof form.getForm == 'function') {
-    form = form.getForm();
-  }
+	if (!form) {
+		form = win.down('form');
+	}
+	if (typeof form.getForm == 'function') {
+		form = form.getForm();
+	}
 
-  if (form.isDirty()) {
-    Oger.extjs.confirmDirtyAction({
-      form: form,
-      msg: Oger._('Ungespeicherte Änderungen vorhanden. Fenster trotzdem schliessen?'),
-      yesFn: function() { Oger.extjs.resetDirty(form); win.close() },
-    });
+	if (form.isDirty()) {
+		Oger.extjs.confirmDirtyAction({
+			form: form,
+			msg: Oger._('Ungespeicherte Änderungen vorhanden. Fenster trotzdem schliessen?'),
+			yesFn: function() { Oger.extjs.resetDirty(form); win.close() },
+		});
 
-    return false;
-  }
+		return false;
+	}
 }  // eo confirm force close
 
 
@@ -457,19 +457,19 @@ Oger.extjs.confirmDirtyClose = function(win, form) {
 */
 Oger.extjs.confirmDirtyReset = function(form) {
 
-  if (typeof form.getForm == 'function') {
-    form = form.getForm();
-  }
+	if (typeof form.getForm == 'function') {
+		form = form.getForm();
+	}
 
-  if (form.isDirty()) {
-    Oger.extjs.confirmDirtyAction({
-      form: form,
-      msg: Oger._('Ungespeicherte Änderungen vorhanden. Änderungen zurücksetzen?'),
-      yesFn: function() { form.reset() },
-    });
+	if (form.isDirty()) {
+		Oger.extjs.confirmDirtyAction({
+			form: form,
+			msg: Oger._('Ungespeicherte Änderungen vorhanden. Änderungen zurücksetzen?'),
+			yesFn: function() { form.reset() },
+		});
 
-    return false;
-  }
+		return false;
+	}
 }  // eo confirm reset form
 
 
@@ -480,21 +480,21 @@ Oger.extjs.confirmDirtyReset = function(form) {
 */
 Oger.extjs.resetDirty = function(form) {
 
-  // if a form panel is given than get the underlaying basic form
-  if (typeof form.getForm == 'function') {
-    form = form.getForm();
-  }
+	// if a form panel is given than get the underlaying basic form
+	if (typeof form.getForm == 'function') {
+		form = form.getForm();
+	}
 
-  var processField = function(field) {
-    if (field.isXType('radiogroup') || field.isXType('checkboxgroup')) {
-      // group items are separate fields so handling of group is not necessary
-    }
-    else {
-      field.resetOriginalValue();
-    }
-  };
+	var processField = function(field) {
+		if (field.isXType('radiogroup') || field.isXType('checkboxgroup')) {
+			// group items are separate fields so handling of group is not necessary
+		}
+		else {
+			field.resetOriginalValue();
+		}
+	};
 
-  form.getFields().each(processField);
+	form.getFields().each(processField);
 };  // eo reset dirty
 
 
@@ -506,32 +506,32 @@ Oger.extjs.resetDirty = function(form) {
 */
 Oger.extjs.emptyForm = function(form, resetDirty) {
 
-  if (!form) {
-    return;
-  }
+	if (!form) {
+		return;
+	}
 
-  // if a form panel is given than get the underlaying basic form
-  if (typeof form.getForm == 'function') {
-    form = form.getForm();
-  }
+	// if a form panel is given than get the underlaying basic form
+	if (typeof form.getForm == 'function') {
+		form = form.getForm();
+	}
 
-  var processField = function(field) {
-    if (field.isXType('radiogroup') || field.isXType('checkboxgroup')) {
-      // group items are separate fields so handling of group is not necessary
-    }
-    else if (field.isXType('radiofield') || field.isXType('checkboxfield')) {
-      field.setValue(false);
-    }
-    else {
-      field.setValue('');
-    }
-  };
+	var processField = function(field) {
+		if (field.isXType('radiogroup') || field.isXType('checkboxgroup')) {
+			// group items are separate fields so handling of group is not necessary
+		}
+		else if (field.isXType('radiofield') || field.isXType('checkboxfield')) {
+			field.setValue(false);
+		}
+		else {
+			field.setValue('');
+		}
+	};
 
-  form.getFields().each(processField);
+	form.getFields().each(processField);
 
-  if (resetDirty) {
-    Oger.extjs.resetDirty(form);
-  }
+	if (resetDirty) {
+		Oger.extjs.resetDirty(form);
+	}
 };  // eo empty form
 
 
@@ -542,23 +542,23 @@ Oger.extjs.emptyForm = function(form, resetDirty) {
 */
 Oger.extjs.getInvalidFieldsInfo = function(form) {
 
-  // if a form panel is given than get the underlaying basic form
-  if (typeof form.getForm == 'function') {
-    form = form.getForm();
-  }
+	// if a form panel is given than get the underlaying basic form
+	if (typeof form.getForm == 'function') {
+		form = form.getForm();
+	}
 
-  var invalidFields = '';
+	var invalidFields = '';
 
-  var processField = function(field) {
-    // include radiogroup and checkbox group
-    if (!field.isValid()) {
-      invalidFields += (invalidFields ? ', ' : '') + field.fieldLabel + ' (' + field.name + ')';
-    }
-  };
+	var processField = function(field) {
+		// include radiogroup and checkbox group
+		if (!field.isValid()) {
+			invalidFields += (invalidFields ? ', ' : '') + field.fieldLabel + ' (' + field.name + ')';
+		}
+	};
 
-  form.getFields().each(processField);
+	form.getFields().each(processField);
 
-  return invalidFields;
+	return invalidFields;
 };  // eo get fields that do not valid
 
 
@@ -568,47 +568,47 @@ Oger.extjs.getInvalidFieldsInfo = function(form) {
 */
 Oger.extjs.showInvalidFields = function(form) {
 
-  if (!form) {
-    return;
-  }
-  if (typeof form.getForm == 'function') {
-    form = form.getForm();
-  }
-  if (form.isValid()) {
-    return;
-  }
+	if (!form) {
+		return;
+	}
+	if (typeof form.getForm == 'function') {
+		form = form.getForm();
+	}
+	if (form.isValid()) {
+		return;
+	}
 
-  var win = Ext.create('Ext.window.Window', {
-    title: Oger._('Fehler'),
-    width: 300,
-    height: 200,
-    modal: true,
-    autoScroll: true,
-    layout: 'fit',
+	var win = Ext.create('Ext.window.Window', {
+		title: Oger._('Fehler'),
+		width: 300,
+		height: 200,
+		modal: true,
+		autoScroll: true,
+		layout: 'fit',
 
-    items: [
-      { xtype: 'panel',
-        html: Oger._('Fehler im Formular. Bitte korrekt ausfüllen.'),
-      }
-    ],
+		items: [
+			{ xtype: 'panel',
+				html: Oger._('Fehler im Formular. Bitte korrekt ausfüllen.'),
+			}
+		],
 
-    buttonAlign: 'center',
-    buttons: [
-      { text: Oger._('Ok'),
-        handler: function(button, event) {
-          this.up('window').close();
-        },
-      },
-      { text: Oger._('Details'),
-        handler: function(button, event) {
-          Ext.create('Oger.extjs.MessageBox').alert(
-            Oger._('Formularfehler - Details'),
-            Oger._('Feldnamen: ') + Oger.extjs.getInvalidFieldsInfo(form));
-        },
-      },
-    ],
-  });
-  win.show();
+		buttonAlign: 'center',
+		buttons: [
+			{ text: Oger._('Ok'),
+				handler: function(button, event) {
+					this.up('window').close();
+				},
+			},
+			{ text: Oger._('Details'),
+				handler: function(button, event) {
+					Ext.create('Oger.extjs.MessageBox').alert(
+						Oger._('Formularfehler - Details'),
+						Oger._('Feldnamen: ') + Oger.extjs.getInvalidFieldsInfo(form));
+				},
+			},
+		],
+	});
+	win.show();
 
 }  // eo invalid fields window
 
@@ -624,22 +624,22 @@ Oger.extjs.showInvalidFields = function(form) {
 */
 Oger.extjs.repairComboValues = function(form) {
 
-  // if a form panel is given than get the underlaying basic form
-  if (typeof form.getForm == 'function') {
-    form = form.getForm();
-  }
+	// if a form panel is given than get the underlaying basic form
+	if (typeof form.getForm == 'function') {
+		form = form.getForm();
+	}
 
-  var processField = function(field) {
-    if (field.isXType('combo')) {
-      if (field.getSubmitValue() === null && field.originalValue != null) {
-        field.setValue('');
-      }
-    }
-  };
+	var processField = function(field) {
+		if (field.isXType('combo')) {
+			if (field.getSubmitValue() === null && field.originalValue != null) {
+				field.setValue('');
+			}
+		}
+	};
 
-  form.getFields().each(processField);
+	form.getFields().each(processField);
 
-  return true;
+	return true;
 };  // eo repair combo values
 
 
@@ -650,22 +650,22 @@ Oger.extjs.repairComboValues = function(form) {
 */
 /*
 Oger.extjs.submitMsg = function(success, addMsg) {
-  if (typeof success == 'undefined' || success === null) {
-    success = true;
-  }
-  if (typeof addMsg == 'undefined' || addMsg === null) {
-    addMsg = '';
-  }
-  if (success) {
-    Ext.create('Oger.extjs.MessageBox').alert(
-      Oger._('Ergebnis'),
-      Oger._('Datensatz wurde erfolgreich gespeichert.' + addMsg));
-  }
-  else {
-    Ext.create('Oger.extjs.MessageBox').alert(
-      Oger._('Fehler'),
-      Oger._('Datensatz konnte nicht gespeichert werden.'));
-  }
+	if (typeof success == 'undefined' || success === null) {
+		success = true;
+	}
+	if (typeof addMsg == 'undefined' || addMsg === null) {
+		addMsg = '';
+	}
+	if (success) {
+		Ext.create('Oger.extjs.MessageBox').alert(
+			Oger._('Ergebnis'),
+			Oger._('Datensatz wurde erfolgreich gespeichert.' + addMsg));
+	}
+	else {
+		Ext.create('Oger.extjs.MessageBox').alert(
+			Oger._('Fehler'),
+			Oger._('Datensatz konnte nicht gespeichert werden.'));
+	}
 
 };  // eo saved ok message
 */
@@ -682,36 +682,36 @@ Oger.extjs.submitMsg = function(success, addMsg) {
 /*
 Oger.showWaitWin = function(milli, modal) {
 
-  //Ext.create('Oger.extjs.MessageBox').wait(Oger._('Das dauert leider etwas ...'), Oger._('Bitte warten'));
-  //Ext.Function.defer(function() { Ext.Msg.hide; }, milli);
+	//Ext.create('Oger.extjs.MessageBox').wait(Oger._('Das dauert leider etwas ...'), Oger._('Bitte warten'));
+	//Ext.Function.defer(function() { Ext.Msg.hide; }, milli);
 
-  // Ext.Message is overwritten by any other error message and overwrites other messages too
-  // so use a self designed wait window
+	// Ext.Message is overwritten by any other error message and overwrites other messages too
+	// so use a self designed wait window
 
-  // modal defaults to true
-  if (modal == undefined || modal == null) {
-    modal = true;
-  }
+	// modal defaults to true
+	if (modal == undefined || modal == null) {
+		modal = true;
+	}
 
-  var waitWin = Ext.create('Ext.window.Window', {
-    title: Oger._('Bitte Warten'),
-    width: 300,
-    height: 250,
-    modal: modal,
-    autoScroll: true,
-    layout: 'fit',
-    items: [
-      { xtype: 'form',
-        layout: 'fit',
-        items: [
-          { xtype: 'textarea', value: Oger._('Das dauert leider etwas länger ...'), disabled: true },
-        ]
-      },
-    ],
-  });
-  waitWin.show();
-  //waitWin.toFront();
-  Ext.Function.defer(function() { waitWin.close(); }, milli);
+	var waitWin = Ext.create('Ext.window.Window', {
+		title: Oger._('Bitte Warten'),
+		width: 300,
+		height: 250,
+		modal: modal,
+		autoScroll: true,
+		layout: 'fit',
+		items: [
+			{ xtype: 'form',
+				layout: 'fit',
+				items: [
+					{ xtype: 'textarea', value: Oger._('Das dauert leider etwas länger ...'), disabled: true },
+				]
+			},
+		],
+	});
+	waitWin.show();
+	//waitWin.toFront();
+	Ext.Function.defer(function() { waitWin.close(); }, milli);
 
 }  // eo show wait window
 */
@@ -730,29 +730,29 @@ Oger.showWaitWin = function(milli, modal) {
  /*
 Oger.extjs.resetForm = function(form) {
 
-  // if a form panel is given than get the underlaying basic form
-  if (typeof form.getForm == 'function') {
-    form = form.getForm();
-  }
+	// if a form panel is given than get the underlaying basic form
+	if (typeof form.getForm == 'function') {
+		form = form.getForm();
+	}
 
-  // I am unable to reset FileField too, so use reset of ext
-  form.reset();
-  return;
+	// I am unable to reset FileField too, so use reset of ext
+	form.reset();
+	return;
 
-  // OBSOLETE for now
-  var processField = function(field) {
-    if (field.isXType('radiogroup') || field.isXType('checkboxgroup')) {
-      // group items are separate fields so handling of group is not necessary
-    }
-    else {
-      // field.setValue(field.originalValue);
-      // fileField has no setValue nor does "field.value = field.originalValue" work
-      // nor works field.reset() but something we must use
-      field.reset();
-    }
-  };
+	// OBSOLETE for now
+	var processField = function(field) {
+		if (field.isXType('radiogroup') || field.isXType('checkboxgroup')) {
+			// group items are separate fields so handling of group is not necessary
+		}
+		else {
+			// field.setValue(field.originalValue);
+			// fileField has no setValue nor does "field.value = field.originalValue" work
+			// nor works field.reset() but something we must use
+			field.reset();
+		}
+	};
 
-  form.getFields().each(processField);
+	form.getFields().each(processField);
 };  // eo reset form
 */
 
@@ -764,23 +764,23 @@ Oger.extjs.resetForm = function(form) {
  */
 Oger.extjs.createOnce = function (query, className, classDef) {
 
-  if (!query) {
-    var o = Oger.getObjByName(className);
-    query = o.xtype;  // or use o.prototype.alias[0] (without widget prefix) ???
-  }
+	if (!query) {
+		var o = Oger.getObjByName(className);
+		query = o.xtype;  // or use o.prototype.alias[0] (without widget prefix) ???
+	}
 
-  // fallback to class name
-  if (!query) {
-    query = 'component[$className=' + className + ']';
-  }
+	// fallback to class name
+	if (!query) {
+		query = 'component[$className=' + className + ']';
+	}
 
-  var cmp = Ext.ComponentQuery.query(query)[0];
+	var cmp = Ext.ComponentQuery.query(query)[0];
 
-  if (!cmp) {
-    cmp = Ext.create(className, classDef);
-  }
+	if (!cmp) {
+		cmp = Ext.create(className, classDef);
+	}
 
-  return cmp;
+	return cmp;
 }  // eo create once
 
 
@@ -791,19 +791,19 @@ Oger.extjs.createOnce = function (query, className, classDef) {
  */
 Oger.extjs.getStoreActionParams = function (store) {
 
-  var op = new Ext.data.Operation({
-    groupers:   store.groupers.items,
-    page:       store.currentPage,
-    start:      (store.currentPage - 1) * store.pageSize,
-    limit:      store.pageSize,
-    addRecords: false,
-    action:     'read',
-    filters:    store.filters.items,
-    sorters:    store.getSorters(),
-  });
+	var op = new Ext.data.Operation({
+		groupers:   store.groupers.items,
+		page:       store.currentPage,
+		start:      (store.currentPage - 1) * store.pageSize,
+		limit:      store.pageSize,
+		addRecords: false,
+		action:     'read',
+		filters:    store.filters.items,
+		sorters:    store.getSorters(),
+	});
 
-  var req = store.getProxy().buildRequest(op);
-  return req.params;
+	var req = store.getProxy().buildRequest(op);
+	return req.params;
 }  // eo get store action params
 
 
@@ -813,13 +813,13 @@ Oger.extjs.getStoreActionParams = function (store) {
  */
 Oger.extjs.expireAlert = function (title, msg, fn, scope, timeout) {
 
-  if (timeout == null) {
-    timeout = 1000;
-  }
+	if (timeout == null) {
+		timeout = 1000;
+	}
 
-  var mbox = Ext.create('Oger.extjs.MessageBox');
-  mbox.alert(title, msg, fn, scope);
-  Ext.Function.defer(function() { mbox.close(); }, timeout);
+	var mbox = Ext.create('Oger.extjs.MessageBox');
+	mbox.alert(title, msg, fn, scope);
+	Ext.Function.defer(function() { mbox.close(); }, timeout);
 }  // eo flash msg
 
 
@@ -829,13 +829,13 @@ Oger.extjs.expireAlert = function (title, msg, fn, scope, timeout) {
  * Define Extjs Messagebox with close action destroy
  */
 Ext.define('Oger.extjs.MessageBox', {
-  extend: 'Ext.window.MessageBox',
-  alias: 'widget.ogerMsgBox',
-  //closeAction: 'destroy',
+	extend: 'Ext.window.MessageBox',
+	alias: 'widget.ogerMsgBox',
+	//closeAction: 'destroy',
 
-  listeners: {
-    hide: function(cmp, opts) {
-      cmp.destroy();
-    },
-  },
+	listeners: {
+		hide: function(cmp, opts) {
+			cmp.destroy();
+		},
+	},
 });  // eo oger message box
