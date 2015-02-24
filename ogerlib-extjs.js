@@ -770,14 +770,23 @@ Oger.extjs.createOnce = function (query, className, classDef) {
 	}
 
 	// fallback to class name
-	if (!query) {
+	if (!query && className) {
 		query = 'component[$className=' + className + ']';
 	}
 
-	var cmp = Ext.ComponentQuery.query(query)[0];
+	var cmp = null;
+	if (query) {
+		cmp = Ext.ComponentQuery.query(query)[0];
+	}
 
 	if (!cmp) {
-		cmp = Ext.create(className, classDef);
+		// if no classname is given, then we expect the query to be a widget alias (xtype)
+		if (!className) {
+			cmp = Ext.widget(query, classDef);
+		}
+		else {
+			cmp = Ext.create(className, classDef);
+		}
 	}
 
 	return cmp;
