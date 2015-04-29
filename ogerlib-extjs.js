@@ -797,8 +797,13 @@ Oger.extjs.createOnce = function (query, className, classDef) {
 /**
  * Get post parameters for store read (load?) action
  * see <http://stackoverflow.com/questions/11241803/how-do-you-get-all-store-parameters-extjs-4-1>
+ * This only works for ext version 4.x
  */
 Oger.extjs.getStoreActionParams = function (store) {
+
+	if (Ext.getVersion().major > 4) {
+		return Oger.extjs.getStoreActionParams5(store);
+	}
 
 	var op = new Ext.data.Operation({
 		groupers:   store.groupers.items,
@@ -815,6 +820,74 @@ Oger.extjs.getStoreActionParams = function (store) {
 	return req.params;
 }  // eo get store action params
 
+
+/**
+ * Get post parameters for store read (load?) action
+ * For ext version > 4
+ */
+Oger.extjs.getStoreActionParams5 = function (store) {
+
+		/*
+		 * THIS DOES NOT WORK, so we have to collect step by step (see below)
+		var op = proxy.createOperation('read');
+		var req = store.getProxy().buildRequest(op);
+		var x = req.params;
+		var u = proxy.buildUrl(req);
+		*/
+
+		var parms = {};
+
+		if (store.currentPage) {
+			parms.page = store.currentPage;
+		}
+		var limit = store.getPageSize();
+		if (limit) {
+			parms.limit = limit;
+		}
+		var start = (store.currentPage - 1) * store.getPageSize();
+		if (start) {
+			parms.start = start;
+		}
+
+		var proxy = store.getProxy();
+		var extraParam = proxy.getExtraParams();
+		if (extraParam) {
+			parms = Ext.Object.merge(parms, extraParam);
+		}
+
+		var sorters = store.getSorters();
+		var sortArr = [];
+		if (sorters && sorters.items.length) {
+			// var sx = { sort: proxy.encodeSorters(sorters) };  // buggy
+			Ext.Array.each(sorters.items, function(item) {
+				sortArr.push({ property: item.getProperty(), direction: item.getDirection() });
+			});
+			parms.sort = Ext.JSON.encode(sortArr);
+		}
+
+		var filters = store.getFilters();
+		var filterArr = [];
+		if (filters && filters.items.length) {
+			// var fx = { filter: proxy.encodeFilters(filters) };  // buggy
+			Ext.Array.each(filters.items, function(item) {
+				filterArr.push({ property: item.getProperty(), value: item.getValue() });
+			});
+			parms.filter = Ext.JSON.encode(filterArr);
+		}
+
+		// Only add grouping options if grouping is remote
+		// UNTESTED !!! maybe need preparation like sorters and filteres ???
+		var groupers = store.getGrouper();
+		var groupArr = []
+		if (store.getRemoteSort() && groupers && groupers.items.length) {
+			Ext.Array.each(groupers.items, function(item) {
+				groupArr.push({ property: item.getProperty() /*, value: item.getValue() */ });
+			});
+			parms.grouper = Ext.JSON.encode(groupArr);
+		}
+
+	return parms;
+}  // eo get store action params (ext > 4.x)
 
 
 /**
