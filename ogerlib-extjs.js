@@ -795,14 +795,14 @@ Oger.extjs.createOnce = function (query, className, classDef) {
 
 
 /**
- * Get post parameters for store read (load?) action
+ * Get request parameters for store read (load?) action
  * see <http://stackoverflow.com/questions/11241803/how-do-you-get-all-store-parameters-extjs-4-1>
  * This only works for ext version 4.x
  */
 Oger.extjs.getStoreActionParams = function (store) {
 
 	if (Ext.getVersion().major > 4) {
-		return Oger.extjs.getStoreActionParams5(store);
+		return Oger.extjs.getStoreRequestParams(store);
 	}
 
 	var op = new Ext.data.Operation({
@@ -822,10 +822,10 @@ Oger.extjs.getStoreActionParams = function (store) {
 
 
 /**
- * Get post parameters for store read (load?) action
+ * Get request parameters for store read (load?) action
  * For ext version > 4
  */
-Oger.extjs.getStoreActionParams5 = function (store) {
+Oger.extjs.getStoreRequestParams = function (store) {
 
 		/*
 		 * THIS DOES NOT WORK, so we have to collect step by step (see below)
@@ -845,7 +845,7 @@ Oger.extjs.getStoreActionParams5 = function (store) {
 			parms.limit = limit;
 		}
 		var start = (store.currentPage - 1) * store.getPageSize();
-		if (start) {
+		if (start && store.getPageSize()) {
 			parms.start = start;
 		}
 
