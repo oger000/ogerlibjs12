@@ -922,6 +922,9 @@ Oger.extjs.expireAlert = function (title, msg, fn, scope, timeout) {
 /**
  * Define Extjs Messagebox with close action destroy
  */
+// use safety guide to avoid duplicate definition if
+// coexisting with extjs4.js from ogerlibjs (pre12)
+if (typeof Oger.extjs.MessageBox == 'undefined') {
 Ext.define('Oger.extjs.MessageBox', {
 	extend: 'Ext.window.MessageBox',
 	alias: 'widget.ogerMsgBox',
@@ -933,3 +936,7 @@ Ext.define('Oger.extjs.MessageBox', {
 		},
 	},
 });  // eo oger message box
+}  // eo safety guide
+
+
+
