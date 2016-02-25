@@ -452,6 +452,18 @@ Oger.extjs.confirmDirtyClose = function(win, form) {
 
 
 /*
+* Default on before win close handler
+* Checks for dirty form fields and ask for close.
+* @panel: Panel (or window) that should be closed
+*/
+Oger.extjs.defaultOnBeforeWinClose = function(win) {
+
+	return Oger.extjs.confirmDirtyClose(win);
+}  // eo default on before win close
+
+
+
+/*
 * Ask to reset dirty form
 * @form: FormPanel or BasicForm to test for dirty state
 */
