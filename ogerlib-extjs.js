@@ -405,15 +405,18 @@ Oger.extjs.confirmDirtyAction = function(args) {
 		});
 
 		if (noText) {
-			confirmWin.add(Ext.create('Ext.Button', {
-				text: noText,
-				handler: function(button, event) {
-					if (args.noFn) {
-						args.noFn();
-					}
-					this.up('window').close();
-				},
-			}));
+			var buttonPanel = confirmWin.getDockedItems('toolbar')[0];
+			if (buttonPanel) {
+				buttonPanel.insert(1, Ext.create('Ext.Button', {
+					text: noText,
+					handler: function(button, event) {
+						if (args.noFn) {
+							args.noFn();
+						}
+						this.up('window').close();
+					},
+				}));
+			}
 		}
 
 		confirmWin.show();
