@@ -280,7 +280,12 @@ Oger.extjs.getDirtyFieldsInfo = function(form) {
 					if (field.isXType('radiofield') || field.isXType('checkboxfield')) {
 						dirtyMsg += '[' + field.inputValue + ']';
 					}
-					dirtyMsg += ': old=' + field.originalValue + ', new=' + field.getValue() + ';';
+					var curValue = field.getValue();
+					dirtyMsg +=
+					': old=' + (typeof field.originalValue == 'string' ? "'" : '') +
+						field.originalValue + (typeof field.originalValue == 'string' ? "'" : '') +
+					', new=' + (typeof curValue == 'string' ? "'" : '') +
+						curValue + (typeof curValue == 'string' ? "'" : '') + ';';
 				};
 			}
 		};
