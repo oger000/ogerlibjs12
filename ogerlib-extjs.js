@@ -524,10 +524,24 @@ Oger.extjs.resetDirty = function(form) {
 * @form: Form for which the fields should be set to empty
 * Works for date fields too, even if null would be the correct empty value.
 */
-Oger.extjs.emptyForm = function(form, resetDirty) {
+Oger.extjs.emptyForm = function(form, opts) {
 
 	if (!form) {
 		return;
+	}
+
+	// for backward compability where second param was boolan resetDirty param
+	var resetDirty = null;
+	if (typeof(opts) == 'boolean') {
+		opts = { resetDirty: opts };
+	}
+
+	opts = opts || {};
+
+
+	// force single field name to array
+	if (opts.exclude && !Array.isArray(opts.exclude)) {
+		opts.exclude = [ opts.exclude ];
 	}
 
 	// if a form panel is given than get the underlaying basic form
@@ -536,6 +550,11 @@ Oger.extjs.emptyForm = function(form, resetDirty) {
 	}
 
 	var processField = function(field) {
+		if (opts.exclude
+				&& opts.exclude.indexOf(field.getName()) > -1) {
+			return;
+		}
+
 		if (field.isXType('radiogroup') || field.isXType('checkboxgroup')) {
 			// group items are separate fields so handling of group is not necessary
 		}
@@ -549,7 +568,7 @@ Oger.extjs.emptyForm = function(form, resetDirty) {
 
 	form.getFields().each(processField);
 
-	if (resetDirty) {
+	if (opts.resetDirty) {
 		Oger.extjs.resetDirty(form);
 	}
 };  // eo empty form
